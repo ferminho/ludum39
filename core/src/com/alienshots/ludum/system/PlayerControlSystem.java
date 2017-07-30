@@ -1,5 +1,6 @@
 package com.alienshots.ludum.system;
 
+import com.alienshots.ludum.Time;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.PlayerComponent;
 import com.alienshots.ludum.component.PositionComponent;
@@ -11,15 +12,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 import static com.alienshots.ludum.asset.texture.GameScreenAtlas.AtlasCoordinates;
+import static com.alienshots.ludum.asset.texture.GameScreenAtlas.UpDown;
 
 public class PlayerControlSystem extends IteratingSystem {
 
     private final ComponentMapper<PositionComponent> positionMapper;
+    private Jump jump;
 
     public PlayerControlSystem() {
         super(Family.all(PlayerComponent.class).get());
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
+        jump = new Jump();
     }
 
     @Override
@@ -27,19 +31,48 @@ public class PlayerControlSystem extends IteratingSystem {
         PositionComponent positionComponent = positionMapper.get(player);
         AtlasCoordinates coords = positionComponent.getCoords();
 
+        if (jump != Jump.NOT_JUMPING && jump.jumpIsOver()) {
+            coords.setUpDown(UpDown.DOWN);
+            jump = Jump.NOT_JUMPING;
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.A) && canMoveLeft(coords)) {
             coords.setColumn(coords.getColumn() - 1);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.D) && canMoveRight(coords)) {
             coords.setColumn(coords.getColumn() + 1);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.W) && canJump(coords)) {
+            jump = new Jump();
+            coords.setUpDown(UpDown.UP);
         }
         positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, coords));
     }
 
     private boolean canMoveLeft(AtlasCoordinates coords) {
-        return coords.getColumn() > 0;
+        return coords.getColumn() > 1 && coords.getUpDown() == UpDown.DOWN;
     }
 
     private boolean canMoveRight(AtlasCoordinates coords) {
-        return (coords.getColumn() < 7 && coords.getLevel() < 4) || (coords.getColumn() < 6);
+        return ((coords.getColumn() < 8 && coords.getLevel() < 4) || (coords.getColumn() < 6))
+                && coords.getUpDown() == UpDown.DOWN;
+    }
+
+    private boolean canJump(AtlasCoordinates coords) {
+        return coords.getColumn() > 1 && coords.getColumn() < 8 && coords.getUpDown() == UpDown.DOWN;
+    }
+
+    private static class Jump {
+        private static final int JUMP_DURATION_IN_MS = 1000;
+        private static final Jump NOT_JUMPING = new Jump();
+
+        int jumpElapsedInMs = 0;
+
+        boolean jumpIsOver() {
+            jumpElapsedInMs += Gdx.graphics.getDeltaTime() * 1000;
+
+            if (jumpElapsedInMs >= JUMP_DURATION_IN_MS) {
+                jumpElapsedInMs -= jumpElapsedInMs;
+                return true;
+            } else return false;
+        }
     }
 }
