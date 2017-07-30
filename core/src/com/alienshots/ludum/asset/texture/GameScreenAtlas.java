@@ -1,15 +1,22 @@
 package com.alienshots.ludum.asset.texture;
 
+import com.alienshots.ludum.component.SawComponent;
+import com.alienshots.ludum.component.PlayerComponent;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-import static com.alienshots.ludum.asset.texture.GameScreenAtlas.ScreenTexture.PLAYER_L1_1;
-import static com.alienshots.ludum.asset.texture.GameScreenAtlas.ScreenTexture.PLAYER_L1_2;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameScreenAtlas {
 
     public static final GameScreenAtlas instance = new GameScreenAtlas();
+
+    private final Map<Class<?>, String> regionNameTemplateLookup = new HashMap<>();
 
     private Texture sourceImage;
     private TextureAtlas textureAtlas;
@@ -18,22 +25,52 @@ public class GameScreenAtlas {
         sourceImage = new Texture("badlogic.jpg");
         textureAtlas = new TextureAtlas();
 
-        textureAtlas.addRegion(PLAYER_L1_1.name(), sourceImage, 0, 0, 30, 30);
-        textureAtlas.addRegion(PLAYER_L1_2.name(), sourceImage, 50, 50, 30, 30);
+        initNameTemplateLookup();
+        initAtlasRegions();
     }
 
-    public TextureRegion getScreenTexture(ScreenTexture screenTexture) {
-        return textureAtlas.findRegion(screenTexture.name());
+    private void initNameTemplateLookup() {
+        regionNameTemplateLookup.put(PlayerComponent.class, "player%s_%s");
+        regionNameTemplateLookup.put(SawComponent.class, "component%s_%s");
+    }
+
+    private void initAtlasRegions() {
+        initPlayerRegions();
+        initSawRegions();
+    }
+
+    private void initPlayerRegions() {
+        String baseName = "player";
+        textureAtlas.addRegion(baseName + "1_1", sourceImage, 0, 0, 30, 30);
+        textureAtlas.addRegion(baseName + "1_2", sourceImage, 50, 50, 30, 30);
+    }
+
+    private void initSawRegions() {
+        String baseName = "saw";
+        textureAtlas.addRegion(baseName + "1_1", sourceImage, 100, 100, 30, 30);
+        textureAtlas.addRegion(baseName + "1_2", sourceImage, 150, 150, 30, 30);
+        textureAtlas.addRegion(baseName + "1_3", sourceImage, 200, 200, 30, 30);
+        textureAtlas.addRegion(baseName + "1_4", sourceImage, 250, 250, 30, 30);
+        textureAtlas.addRegion(baseName + "1_5", sourceImage, 300, 300, 30, 30);
+        textureAtlas.addRegion(baseName + "1_6", sourceImage, 350, 350, 30, 30);
+        textureAtlas.addRegion(baseName + "1_7", sourceImage, 400, 400, 30, 30);
+    }
+
+    public TextureRegion getScreenTexture(Class<?> tagClass, AtlasCoordinates coords) {
+        String regionName = String.format(regionNameTemplateLookup.get(tagClass), coords.getLevel(), coords.getColumn());
+        return textureAtlas.findRegion(regionName);
     }
 
     public void dispose() {
         sourceImage.dispose();
     }
 
-    public enum ScreenTexture {
-        PLAYER_L1_1, PLAYER_L1_2, PLAYER_L1_3, PLAYER_L1_4, PLAYER_L1_5, PLAYER_L1_6, PLAYER_L1_7, PLAYER_L1_8,
-        PLAYER_L2_1, PLAYER_L2_2, PLAYER_L2_3, PLAYER_L2_4, PLAYER_L2_5, PLAYER_L2_6, PLAYER_L2_7, PLAYER_L2_8,
-        PLAYER_L3_1, PLAYER_L3_2, PLAYER_L3_3, PLAYER_L3_4, PLAYER_L3_5, PLAYER_L3_6, PLAYER_L3_7, PLAYER_L3_8,
-        PLAYER_L4_1, PLAYER_L4_2, PLAYER_L4_3, PLAYER_L4_4, PLAYER_L4_5, PLAYER_L4_6, PLAYER_L4_7, PLAYER_L4_8
+    // Indices start at 1
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    public static class AtlasCoordinates {
+        private int level;
+        private int column;
     }
 }
