@@ -47,13 +47,13 @@ public class GameScreenAtlas {
 
     private void initSawRegions() {
         String baseName = SawComponent.class.getName();
-        textureAtlas.addRegion(baseName + "1_1", sourceImage, 100, 100, 30, 30);
-        textureAtlas.addRegion(baseName + "1_2", sourceImage, 150, 150, 30, 30);
-        textureAtlas.addRegion(baseName + "1_3", sourceImage, 200, 200, 30, 30);
-        textureAtlas.addRegion(baseName + "1_4", sourceImage, 250, 250, 30, 30);
-        textureAtlas.addRegion(baseName + "1_5", sourceImage, 300, 300, 30, 30);
-        textureAtlas.addRegion(baseName + "1_6", sourceImage, 350, 350, 30, 30);
-        textureAtlas.addRegion(baseName + "1_7", sourceImage, 400, 400, 30, 30);
+        textureAtlas.addRegion(baseName + "1_1", sourceImage, 205, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_2", sourceImage, 356, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_3", sourceImage, 482, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_4", sourceImage, 608, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_5", sourceImage, 734, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_6", sourceImage, 859, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_7", sourceImage, 985, 632, 30, 27);
     }
 
     public TextureRegion getScreenTexture(Class<?> tagClass, AtlasCoordinates coords) {
