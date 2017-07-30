@@ -22,7 +22,7 @@ public class GameScreenAtlas {
     private TextureAtlas textureAtlas;
 
     public GameScreenAtlas() {
-        sourceImage = new Texture("background.png");
+        sourceImage = new Texture("sprites.png");
         textureAtlas = new TextureAtlas();
 
         initNameTemplateLookup();
