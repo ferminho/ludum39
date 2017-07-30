@@ -47,13 +47,13 @@ public class GameScreenAtlas {
 
     private void initSawRegions() {
         String baseName = SawComponent.class.getName();
-        textureAtlas.addRegion(baseName + "1_1_DOWN", sourceImage, 100, 100, 30, 30);
-        textureAtlas.addRegion(baseName + "1_2_DOWN", sourceImage, 150, 150, 30, 30);
-        textureAtlas.addRegion(baseName + "1_3_DOWN", sourceImage, 200, 200, 30, 30);
-        textureAtlas.addRegion(baseName + "1_4_DOWN", sourceImage, 250, 250, 30, 30);
-        textureAtlas.addRegion(baseName + "1_5_DOWN", sourceImage, 300, 300, 30, 30);
-        textureAtlas.addRegion(baseName + "1_6_DOWN", sourceImage, 350, 350, 30, 30);
-        textureAtlas.addRegion(baseName + "1_7_DOWN", sourceImage, 400, 400, 30, 30);
+        textureAtlas.addRegion(baseName + "1_1_DOWN", sourceImage, 205, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_2_DOWN", sourceImage, 356, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_3_DOWN", sourceImage, 482, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_4_DOWN", sourceImage, 608, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_5_DOWN", sourceImage, 734, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_6_DOWN", sourceImage, 859, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_7_DOWN", sourceImage, 985, 632, 30, 27);
     }
 
     public TextureRegion getScreenTexture(Class<?> tagClass, AtlasCoordinates coords) {
