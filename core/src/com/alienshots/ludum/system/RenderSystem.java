@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -29,6 +30,7 @@ public class RenderSystem extends IteratingSystem {
 
     public RenderSystem(Camera camera) {
         super(Family.all(PositionComponent.class, DisplayComponent.class).get());
+
         this.camera = camera;
         this.batch = new SpriteBatch();
         this.entities = new ArrayList<>();
@@ -49,11 +51,12 @@ public class RenderSystem extends IteratingSystem {
         batch.begin();
         entities.stream().filter(e -> displayMapper.get(e).isVisible())
                          .map(e -> positionMapper.get(e).getRegion())
-                         .forEach(region -> {
-                             batch.draw(region, region.getRegionX(),
-                                     camera.viewportHeight - region.getRegionY() - region.getRegionHeight());
-                         });
+                         .forEach(region -> batch.draw(region, region.getRegionX(), flippedY(region)));
         batch.end();
         entities.clear();
+    }
+
+    private float flippedY(TextureRegion region) {
+        return camera.viewportHeight - region.getRegionY() - region.getRegionHeight();
     }
 }
