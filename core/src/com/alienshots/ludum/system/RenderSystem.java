@@ -50,7 +50,8 @@ public class RenderSystem extends IteratingSystem {
         entities.stream().filter(e -> displayMapper.get(e).isVisible())
                          .map(e -> positionMapper.get(e).getRegion())
                          .forEach(region -> {
-                             batch.draw(region, region.getRegionX(), region.getRegionY());
+                             batch.draw(region, region.getRegionX(),
+                                     camera.viewportHeight - region.getRegionY() - region.getRegionHeight());
                          });
         batch.end();
         entities.clear();
