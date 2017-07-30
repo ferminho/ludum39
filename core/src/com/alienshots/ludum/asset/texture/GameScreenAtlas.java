@@ -30,8 +30,8 @@ public class GameScreenAtlas {
     }
 
     private void initNameTemplateLookup() {
-        regionNameTemplateLookup.put(PlayerComponent.class, "player%s_%s");
-        regionNameTemplateLookup.put(SawComponent.class, "component%s_%s");
+        regionNameTemplateLookup.put(PlayerComponent.class, PlayerComponent.class.getName() + "%s_%s");
+        regionNameTemplateLookup.put(SawComponent.class, SawComponent.class.getName() + "%s_%s");
     }
 
     private void initAtlasRegions() {
@@ -40,13 +40,13 @@ public class GameScreenAtlas {
     }
 
     private void initPlayerRegions() {
-        String baseName = "player";
+        String baseName = PlayerComponent.class.getName();
         textureAtlas.addRegion(baseName + "1_1", sourceImage, 0, 0, 30, 30);
         textureAtlas.addRegion(baseName + "1_2", sourceImage, 50, 50, 30, 30);
     }
 
     private void initSawRegions() {
-        String baseName = "saw";
+        String baseName = SawComponent.class.getName();
         textureAtlas.addRegion(baseName + "1_1", sourceImage, 100, 100, 30, 30);
         textureAtlas.addRegion(baseName + "1_2", sourceImage, 150, 150, 30, 30);
         textureAtlas.addRegion(baseName + "1_3", sourceImage, 200, 200, 30, 30);
