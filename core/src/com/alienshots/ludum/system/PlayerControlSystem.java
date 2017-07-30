@@ -10,6 +10,8 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
+import static com.alienshots.ludum.asset.texture.GameScreenAtlas.AtlasCoordinates;
+
 public class PlayerControlSystem extends IteratingSystem {
 
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -21,12 +23,23 @@ public class PlayerControlSystem extends IteratingSystem {
     }
 
     @Override
-    protected void processEntity(Entity entity, float deltaTime) {
-        PositionComponent positionComponent = positionMapper.get(entity);
+    protected void processEntity(Entity player, float deltaTime) {
+        PositionComponent positionComponent = positionMapper.get(player);
+        AtlasCoordinates coords = positionComponent.getCoords();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A))
-            positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, new GameScreenAtlas.AtlasCoordinates(1, 1, GameScreenAtlas.UpDown.DOWN)));
-        if (Gdx.input.isKeyPressed(Input.Keys.D))
-            positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, new GameScreenAtlas.AtlasCoordinates(1, 2, GameScreenAtlas.UpDown.DOWN)));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.A) && canMoveLeft(coords)) {
+            coords.setColumn(coords.getColumn() - 1);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.D) && canMoveRight(coords)) {
+            coords.setColumn(coords.getColumn() + 1);
+        }
+        positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, coords));
+    }
+
+    private boolean canMoveLeft(AtlasCoordinates coords) {
+        return coords.getColumn() > 0;
+    }
+
+    private boolean canMoveRight(AtlasCoordinates coords) {
+        return (coords.getColumn() < 7 && coords.getLevel() < 4) || (coords.getColumn() < 6);
     }
 }

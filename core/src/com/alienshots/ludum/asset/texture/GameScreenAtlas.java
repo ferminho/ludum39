@@ -43,6 +43,7 @@ public class GameScreenAtlas {
         String baseName = PlayerComponent.class.getName();
         textureAtlas.addRegion(baseName + "1_1_DOWN", sourceImage, 192, 570, 30, 38);
         textureAtlas.addRegion(baseName + "1_2_DOWN", sourceImage, 329, 603, 26, 37);
+        textureAtlas.addRegion(baseName + "1_3_DOWN", sourceImage, 455, 603, 26, 37);
     }
 
     private void initSawRegions() {
