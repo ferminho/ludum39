@@ -22,7 +22,7 @@ public class GameScreenAtlas {
     private TextureAtlas textureAtlas;
 
     public GameScreenAtlas() {
-        sourceImage = new Texture("badlogic.jpg");
+        sourceImage = new Texture("background.png");
         textureAtlas = new TextureAtlas();
 
         initNameTemplateLookup();
