@@ -75,6 +75,7 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addSystem(new PlayerControlSystem());
         engine.addSystem(new SawMovementSystem());
         engine.addSystem(new DropMovementSystem());
+        engine.addSystem(new CrateMovementSystem());
     }
 
     private void initEntities() {
@@ -86,5 +87,8 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addEntity(GameEntitiesFactory.instance.createDrop(2, 3));
         engine.addEntity(GameEntitiesFactory.instance.createDrop(4, 2));
         engine.addEntity(GameEntitiesFactory.instance.createDrop(6, 1));
+        IntStream.range(0,3).forEach(i ->
+                engine.addEntity(GameEntitiesFactory.instance.createCrate())
+        );
     }
 }

@@ -47,4 +47,17 @@ public class GameEntitiesFactory {
                                   .build());
         return drop;
     }
+
+    public Entity createCrate() {
+        Entity crate = new Entity();
+        AtlasCoordinates initialCoords = new AtlasCoordinates(3, 1, VerticalPosition.LOW);
+
+        crate.add(new CrateComponent());
+        crate.add(new DisplayComponent(false));
+        crate.add(PositionComponent.builder()
+                .coords(initialCoords)
+                .region(GameScreenAtlas.instance.getScreenTexture(CrateComponent.class, initialCoords))
+                .build());
+        return crate;
+    }
 }
