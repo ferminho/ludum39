@@ -1,7 +1,10 @@
 package com.alienshots.ludum;
 
 import com.badlogic.gdx.Gdx;
+import jdk.nashorn.internal.objects.annotations.Constructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +38,15 @@ public class Time {
         timers.forEach(Timer::moveTime);
     }
 
-    @RequiredArgsConstructor
     public static class Timer {
-        private final int tickRate;
+        @Getter
+        @Setter
+        private int tickRate;
         private int elapsed;
+
+        public Timer(int tickRate) { this.tickRate = tickRate; }
+
+        public void reset() { elapsed = 0; }
 
         public void moveTime() {
             elapsed = (elapsed + 1) % tickRate;

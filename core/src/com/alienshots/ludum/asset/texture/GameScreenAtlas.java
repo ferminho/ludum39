@@ -23,14 +23,7 @@ public class GameScreenAtlas {
     public GameScreenAtlas() {
         sourceImage = new Texture("sprites.png");
         textureAtlas = new TextureAtlas();
-
-        initNameTemplateLookup();
         initAtlasRegions();
-    }
-
-    private void initNameTemplateLookup() {
-        regionNameTemplateLookup.put(PlayerComponent.class, PlayerComponent.class.getName() + "%s_%s_%s");
-        regionNameTemplateLookup.put(SawComponent.class, SawComponent.class.getName() + "%s_%s_%s");
     }
 
     private void initAtlasRegions() {
@@ -236,9 +229,12 @@ public class GameScreenAtlas {
     }
 
     public TextureRegion getScreenTexture(Class<?> tagClass, AtlasCoordinates coords) {
-        String regionName = String.format(regionNameTemplateLookup.get(tagClass),
+        String regionName = String.format(tagClass.getName() + "%s_%s_%s",
                                           coords.getLevel(), coords.getColumn(), coords.getVerticalPosition());
-        return textureAtlas.findRegion(regionName);
+        TextureRegion region = textureAtlas.findRegion(regionName);
+        if (region == null)
+            System.out.println("REGION not found for " +regionName);
+        return region;
     }
 
     public void dispose() {

@@ -1,10 +1,7 @@
 package com.alienshots.ludum;
 
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
-import com.alienshots.ludum.component.SawComponent;
-import com.alienshots.ludum.component.DisplayComponent;
-import com.alienshots.ludum.component.PlayerComponent;
-import com.alienshots.ludum.component.PositionComponent;
+import com.alienshots.ludum.component.*;
 import com.badlogic.ashley.core.Entity;
 
 import static com.alienshots.ludum.asset.texture.GameScreenAtlas.*;
@@ -37,5 +34,17 @@ public class GameEntitiesFactory {
                                  .region(GameScreenAtlas.instance.getScreenTexture(SawComponent.class, initialCoords))
                                  .build());
         return saw;
+    }
+
+    public Entity createDrop(int column, int delayInUpdates) {
+        Entity drop = new Entity();
+        AtlasCoordinates initialCoords = new AtlasCoordinates(2, column, VerticalPosition.HIGH);
+        drop.add(new DropComponent(Time.newTimer(delayInUpdates)));
+        drop.add(new DisplayComponent(false));
+        drop.add(PositionComponent.builder()
+                                  .coords(initialCoords)
+                                  .region(GameScreenAtlas.instance.getScreenTexture(DropComponent.class, initialCoords))
+                                  .build());
+        return drop;
     }
 }

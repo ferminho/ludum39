@@ -1,10 +1,7 @@
 package com.alienshots.ludum;
 
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
-import com.alienshots.ludum.system.MovementSystem;
-import com.alienshots.ludum.system.PlayerControlSystem;
-import com.alienshots.ludum.system.RenderSystem;
-import com.alienshots.ludum.system.SawMovementSystem;
+import com.alienshots.ludum.system.*;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -77,6 +74,7 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addSystem(new RenderSystem(camera));
         engine.addSystem(new PlayerControlSystem());
         engine.addSystem(new SawMovementSystem());
+        engine.addSystem(new DropMovementSystem());
     }
 
     private void initEntities() {
@@ -84,5 +82,9 @@ public class PowerCharge extends ApplicationAdapter {
         IntStream.range(0,3).forEach(i ->
                 engine.addEntity(GameEntitiesFactory.instance.createSaw())
         );
+        engine.addEntity(GameEntitiesFactory.instance.createDrop(1, 1));
+        engine.addEntity(GameEntitiesFactory.instance.createDrop(2, 3));
+        engine.addEntity(GameEntitiesFactory.instance.createDrop(4, 2));
+        engine.addEntity(GameEntitiesFactory.instance.createDrop(6, 1));
     }
 }

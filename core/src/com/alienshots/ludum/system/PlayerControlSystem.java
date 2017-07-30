@@ -31,8 +31,6 @@ public class PlayerControlSystem extends IteratingSystem {
         PositionComponent positionComponent = positionMapper.get(player);
         AtlasCoordinates coords = positionComponent.getCoords();
 
-            positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, new GameScreenAtlas.AtlasCoordinates(1, 1, VerticalPosition.LOW)));
-            positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, new GameScreenAtlas.AtlasCoordinates(1, 2, VerticalPosition.LOW)));
         if (jump != Jump.NOT_JUMPING && jump.jumpIsOver()) {
             coords.setVerticalPosition(VerticalPosition.LOW);
             jump = Jump.NOT_JUMPING;

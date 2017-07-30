@@ -51,7 +51,12 @@ public class RenderSystem extends IteratingSystem {
         batch.begin();
         entities.stream().filter(e -> displayMapper.get(e).isVisible())
                          .map(e -> positionMapper.get(e).getRegion())
-                         .forEach(region -> batch.draw(region, region.getRegionX(), flippedY(region)));
+                         .forEach(region -> {
+                             if (region == null)
+                                 System.out.println("NO REGION TO DRAW");
+                             else
+                                batch.draw(region, region.getRegionX(), flippedY(region));
+                         });
         batch.end();
         entities.clear();
     }
