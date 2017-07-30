@@ -15,7 +15,7 @@ public class GameEntitiesFactory {
 
     public Entity createPlayer() {
         Entity player = new Entity();
-        AtlasCoordinates initialCoords = new AtlasCoordinates(1, 1, UpDown.DOWN);
+        AtlasCoordinates initialCoords = new AtlasCoordinates(1, 1, VerticalPosition.LOW);
 
         player.add(new PlayerComponent());
         player.add(new DisplayComponent(true));
@@ -28,7 +28,7 @@ public class GameEntitiesFactory {
 
     public Entity createSaw() {
         Entity saw = new Entity();
-        AtlasCoordinates initialCoords = new AtlasCoordinates(1, 7, UpDown.DOWN);
+        AtlasCoordinates initialCoords = new AtlasCoordinates(1, 7, VerticalPosition.LOW);
 
         saw.add(new SawComponent());
         saw.add(new DisplayComponent(false));

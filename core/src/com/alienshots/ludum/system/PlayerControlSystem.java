@@ -25,8 +25,8 @@ public class PlayerControlSystem extends IteratingSystem {
         PositionComponent positionComponent = positionMapper.get(entity);
 
         if (Gdx.input.isKeyPressed(Input.Keys.A))
-            positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, new GameScreenAtlas.AtlasCoordinates(1, 1, GameScreenAtlas.UpDown.DOWN)));
+            positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, new GameScreenAtlas.AtlasCoordinates(1, 1, GameScreenAtlas.VerticalPosition.LOW)));
         if (Gdx.input.isKeyPressed(Input.Keys.D))
-            positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, new GameScreenAtlas.AtlasCoordinates(1, 2, GameScreenAtlas.UpDown.DOWN)));
+            positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, new GameScreenAtlas.AtlasCoordinates(1, 2, GameScreenAtlas.VerticalPosition.LOW)));
     }
 }
