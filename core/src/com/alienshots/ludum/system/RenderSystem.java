@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -20,20 +21,16 @@ import java.util.List;
 
 public class RenderSystem extends IteratingSystem {
 
+    private final Camera camera;
     private final Batch batch;
-    private final OrthographicCamera camera;
-
     private final List<Entity> entities;
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<DisplayComponent> displayMapper;
 
-    public RenderSystem() {
+    public RenderSystem(Camera camera) {
         super(Family.all(PositionComponent.class, DisplayComponent.class).get());
-
+        this.camera = camera;
         this.batch = new SpriteBatch();
-        this.camera = new OrthographicCamera(1280f, 720f);
-        camera.position.set(new Vector3(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0));
-
         this.entities = new ArrayList<>();
         this.positionMapper = ComponentMapper.getFor(PositionComponent.class);
         this.displayMapper = ComponentMapper.getFor(DisplayComponent.class);
@@ -47,9 +44,8 @@ public class RenderSystem extends IteratingSystem {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
 
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         entities.stream().filter(e -> displayMapper.get(e).isVisible())
                          .map(e -> positionMapper.get(e).getRegion())
