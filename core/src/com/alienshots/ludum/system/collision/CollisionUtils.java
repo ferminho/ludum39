@@ -1,5 +1,6 @@
 package com.alienshots.ludum.system.collision;
 
+import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.PlayerComponent;
 import com.alienshots.ludum.component.PositionComponent;
@@ -12,6 +13,7 @@ public class CollisionUtils {
 
     public static void resetPlayer(Entity player) {
         GameScreenAtlas.AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
+        SoundManager.instance.play(SoundManager.SFX_DIE);
         playerCoords.setLevel(1);
         playerCoords.setColumn(1);
         playerCoords.setVerticalPosition(GameScreenAtlas.VerticalPosition.LOW);

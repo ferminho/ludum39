@@ -14,6 +14,7 @@ public class Time {
     public static final Time instance = new Time();
 
     private int elapsedTimeInMs = 0;
+    @Getter
     private int gameSpeedInMs = DEFAULT_GAME_SPEED_IN_MS;
 
     public boolean timeIsMoving() {
