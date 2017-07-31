@@ -1,11 +1,11 @@
 package com.alienshots.ludum;
 
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
-import com.alienshots.ludum.system.MovementSystem;
-import com.alienshots.ludum.system.PlayerControlSystem;
-import com.alienshots.ludum.system.RenderSystem;
-import com.alienshots.ludum.system.SawMovementSystem;
+import com.alienshots.ludum.system.*;
+import com.alienshots.ludum.system.collision.HazardsCollisionSystem;
+import com.alienshots.ludum.system.collision.PlayerCollisionSystem;
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -69,18 +69,21 @@ public class PowerCharge extends ApplicationAdapter {
     private void initEngine() {
         engine = new Engine();
 
-        initSystems();
-        initEntities();
+        Entity player = GameEntitiesFactory.instance.createPlayer();
+        initEntities(player);
+        initSystems(player);
     }
 
-    private void initSystems() {
-        engine.addSystem(new RenderSystem(camera));
+    private void initSystems(Entity player) {
         engine.addSystem(new PlayerControlSystem());
         engine.addSystem(new SawMovementSystem());
+        engine.addSystem(new HazardsCollisionSystem(player));
+        engine.addSystem(new PlayerCollisionSystem(player));
+        engine.addSystem(new RenderSystem(camera));
     }
 
-    private void initEntities() {
-        engine.addEntity(GameEntitiesFactory.instance.createPlayer());
+    private void initEntities(Entity player) {
+        engine.addEntity(player);
         IntStream.range(0,3).forEach(i ->
                 engine.addEntity(GameEntitiesFactory.instance.createSaw())
         );

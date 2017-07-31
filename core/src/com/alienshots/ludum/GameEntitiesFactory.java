@@ -1,10 +1,7 @@
 package com.alienshots.ludum;
 
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
-import com.alienshots.ludum.component.SawComponent;
-import com.alienshots.ludum.component.DisplayComponent;
-import com.alienshots.ludum.component.PlayerComponent;
-import com.alienshots.ludum.component.PositionComponent;
+import com.alienshots.ludum.component.*;
 import com.badlogic.ashley.core.Entity;
 
 import static com.alienshots.ludum.asset.texture.GameScreenAtlas.*;
@@ -18,6 +15,7 @@ public class GameEntitiesFactory {
         AtlasCoordinates initialCoords = new AtlasCoordinates(1, 1, VerticalPosition.LOW);
 
         player.add(new PlayerComponent());
+        player.add(new CollisionComponent());
         player.add(new DisplayComponent(true));
         player.add(PositionComponent.builder()
                                     .coords(initialCoords)
@@ -31,6 +29,8 @@ public class GameEntitiesFactory {
         AtlasCoordinates initialCoords = new AtlasCoordinates(1, 7, VerticalPosition.LOW);
 
         saw.add(new SawComponent());
+        saw.add(new HazardComponent());
+        saw.add(new CollisionComponent());
         saw.add(new DisplayComponent(false));
         saw.add(PositionComponent.builder()
                                  .coords(initialCoords)
