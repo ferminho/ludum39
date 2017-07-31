@@ -4,6 +4,7 @@ import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.CollisionComponent;
 import com.alienshots.ludum.component.PlayerComponent;
+import com.alienshots.ludum.component.PlayerEventComponent;
 import com.alienshots.ludum.component.PositionComponent;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -20,6 +21,7 @@ public class PlayerControlSystem extends IteratingSystem {
     private final ComponentMapper<PlayerComponent> playerMapper;
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<CollisionComponent> collisionMapper;
+    private final ComponentMapper<PlayerEventComponent> playerEventMapper;
 
     public PlayerControlSystem() {
         super(Family.all(PlayerComponent.class).get());
@@ -27,6 +29,7 @@ public class PlayerControlSystem extends IteratingSystem {
         playerMapper = ComponentMapper.getFor(PlayerComponent.class);
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         collisionMapper = ComponentMapper.getFor(CollisionComponent.class);
+        playerEventMapper = ComponentMapper.getFor(PlayerEventComponent.class);
     }
 
     @Override
@@ -34,6 +37,8 @@ public class PlayerControlSystem extends IteratingSystem {
         PlayerComponent playerComponent = playerMapper.get(player);
         PositionComponent positionComponent = positionMapper.get(player);
         AtlasCoordinates coords = positionComponent.getCoords();
+
+        if (playerEventMapper.has(player) && playerEventMapper.get(player).isUserDied()) return;
 
         collisionMapper.get(player).setPrevPosInPlayerTimeRef(coords);
 
