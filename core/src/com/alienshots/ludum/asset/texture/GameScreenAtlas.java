@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -266,6 +267,7 @@ public class GameScreenAtlas {
     @AllArgsConstructor
     @Getter
     @Setter
+    @EqualsAndHashCode
     public static class AtlasCoordinates {
         private int level;
         private int column;
