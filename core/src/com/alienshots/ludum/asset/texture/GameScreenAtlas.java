@@ -200,11 +200,9 @@ public class GameScreenAtlas {
 
     private void initGeneratorRegions() {
         String baseName = GeneratorComponent.class.getName();
-        textureAtlas.addRegion(baseName + "4_1_LOW", sourceImage, 997, 254, 7, 15);
-        textureAtlas.addRegion(baseName + "4_2_LOW", sourceImage, 997, 254, 16, 15);
-        textureAtlas.addRegion(baseName + "4_3_LOW", sourceImage, 997, 254, 25, 15);
-        textureAtlas.addRegion(baseName + "4_4_LOW", sourceImage, 997, 254, 34, 15);
-        textureAtlas.addRegion(baseName + "4_5_LOW", sourceImage, 997, 254, 43, 15);
+        textureAtlas.addRegion(baseName + "4_1_LOW", sourceImage, 997, 256, 13, 11);
+        textureAtlas.addRegion(baseName + "4_2_LOW", sourceImage, 997, 256, 28, 15);
+        textureAtlas.addRegion(baseName + "4_3_LOW", sourceImage, 997, 256, 43, 15);
     }
 
     private void initBatteryItemIndicatorRegions() {

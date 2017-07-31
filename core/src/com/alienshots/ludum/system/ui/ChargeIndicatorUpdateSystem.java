@@ -29,11 +29,12 @@ public class ChargeIndicatorUpdateSystem extends IteratingSystem {
         PositionComponent positionComponent = positionMapper.get(world);
         AtlasCoordinates coords = positionComponent.getCoords();
 
+        int step = (int) (WorldChargeComponent.MAX_CHARGE / 10f);
         int column = 10;
         boolean visible = true;
         if (chargeComponent.getChargeLevel() > 0f) {
             int chargeLevel = (int) Math.ceil(chargeComponent.getChargeLevel());
-            column = (chargeLevel + 9) / 10;
+            column = (chargeLevel + step - 1) / step;
         } else {
             visible = false;
         }

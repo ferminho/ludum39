@@ -5,7 +5,8 @@ import com.alienshots.ludum.component.*;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 
-import static com.alienshots.ludum.asset.texture.GameScreenAtlas.*;
+import static com.alienshots.ludum.asset.texture.GameScreenAtlas.AtlasCoordinates;
+import static com.alienshots.ludum.asset.texture.GameScreenAtlas.VerticalPosition;
 
 public class GameEntitiesFactory {
 
@@ -39,12 +40,13 @@ public class GameEntitiesFactory {
         return lever;
     }
 
-    public Entity createGenerator(Entity lever) {
+    public Entity createGenerator(Entity lever, Entity world) {
         Entity generator = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(4, 1, VerticalPosition.LOW);
 
         generator.add(new GeneratorComponent());
         generator.add(new GeneratorLevelComponent());
+        generator.add(world.getComponent(WorldChargeComponent.class));
         generator.add(new DisplayComponent(false));
         generator.add(lever.getComponent(LeverStateComponent.class));
         generator.add(buildPositionComponent(GeneratorComponent.class, initialCoords));
