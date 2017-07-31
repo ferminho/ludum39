@@ -75,14 +75,13 @@ public class GameScreenAtlas {
         textureAtlas.addRegion(baseName + "2_5_HIGH", sourceImage, 652, 431, 28, 30);
         textureAtlas.addRegion(baseName + "2_6_HIGH", sourceImage, 778, 426, 28, 30);
         textureAtlas.addRegion(baseName + "2_7_HIGH", sourceImage, 907, 427, 28, 30);
-        textureAtlas.addRegion(baseName + "2_8_HIGH", sourceImage, 1033, 434, 28, 30);
         // third floor
         textureAtlas.addRegion(baseName + "3_1_LOW", sourceImage, 227, 363, 26, 37);
         textureAtlas.addRegion(baseName + "3_2_LOW", sourceImage, 351, 363, 26, 37);
         textureAtlas.addRegion(baseName + "3_3_LOW", sourceImage, 477, 363, 26, 37);
         textureAtlas.addRegion(baseName + "3_4_LOW", sourceImage, 603, 363, 26, 37);
         textureAtlas.addRegion(baseName + "3_5_LOW", sourceImage, 729, 363, 26, 37);
-        textureAtlas.addRegion(baseName + "3_6_LOW", sourceImage, 855, 363, 26, 37);
+        textureAtlas.addRegion(baseName + "3_6_LOW", sourceImage, 848, 363, 26, 37);
         textureAtlas.addRegion(baseName + "3_7_LOW", sourceImage, 955, 354, 25, 36);
         textureAtlas.addRegion(baseName + "3_8_LOW", sourceImage, 1044, 363, 26, 37);
         textureAtlas.addRegion(baseName + "3_1_HIGH", sourceImage, 226, 314, 28, 30);
@@ -90,9 +89,8 @@ public class GameScreenAtlas {
         textureAtlas.addRegion(baseName + "3_3_HIGH", sourceImage, 476, 309, 28, 30);
         textureAtlas.addRegion(baseName + "3_4_HIGH", sourceImage, 602, 312, 28, 30);
         textureAtlas.addRegion(baseName + "3_5_HIGH", sourceImage, 728, 309, 28, 30);
-        textureAtlas.addRegion(baseName + "3_6_HIGH", sourceImage, 854, 306, 28, 30);
+        textureAtlas.addRegion(baseName + "3_6_HIGH", sourceImage, 847, 306, 28, 30);
         textureAtlas.addRegion(baseName + "3_7_HIGH", sourceImage, 956, 298, 25, 36);
-        textureAtlas.addRegion(baseName + "3_8_HIGH", sourceImage, 1043, 309, 28, 30);
         // fourth floor
         textureAtlas.addRegion(baseName + "4_1_LOW", sourceImage, 266, 229, 30, 37);
         textureAtlas.addRegion(baseName + "4_2_LOW", sourceImage, 329, 244, 26, 37);
@@ -111,13 +109,22 @@ public class GameScreenAtlas {
 
     private void initSawRegions() {
         String baseName = SawComponent.class.getName();
-        textureAtlas.addRegion(baseName + "1_1_LOW", sourceImage, 205, 632, 30, 27);
-        textureAtlas.addRegion(baseName + "1_2_LOW", sourceImage, 356, 632, 30, 27);
-        textureAtlas.addRegion(baseName + "1_3_LOW", sourceImage, 482, 632, 30, 27);
-        textureAtlas.addRegion(baseName + "1_4_LOW", sourceImage, 608, 632, 30, 27);
-        textureAtlas.addRegion(baseName + "1_5_LOW", sourceImage, 734, 632, 30, 27);
-        textureAtlas.addRegion(baseName + "1_6_LOW", sourceImage, 859, 632, 30, 27);
-        textureAtlas.addRegion(baseName + "1_7_LOW", sourceImage, 985, 632, 30, 27);
+        // Facing left
+        textureAtlas.addRegion(baseName + "1_1_LOW", sourceImage, 219, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_3_LOW", sourceImage, 356, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_5_LOW", sourceImage, 482, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_7_LOW", sourceImage, 608, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_9_LOW", sourceImage, 734, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_11_LOW", sourceImage, 859, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_13_LOW", sourceImage, 985, 632, 30, 27);
+        // Facing right
+        textureAtlas.addRegion(baseName + "1_2_LOW", sourceImage, 187, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_4_LOW", sourceImage, 298, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_6_LOW", sourceImage, 424, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_8_LOW", sourceImage, 550, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_10_LOW", sourceImage, 676, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_12_LOW", sourceImage, 802, 632, 30, 27);
+        textureAtlas.addRegion(baseName + "1_14_LOW", sourceImage, 928, 632, 30, 27);
     }
 
     private void initDropRegions() {
@@ -144,14 +151,24 @@ public class GameScreenAtlas {
 
     private void initCrateRegions() {
         String baseName = CrateComponent.class.getName();
+        // Facing right
         textureAtlas.addRegion(baseName + "3_1_LOW", sourceImage, 186, 298, 39, 102);
-        textureAtlas.addRegion(baseName + "3_2_LOW", sourceImage, 310, 298, 39, 102);
-        textureAtlas.addRegion(baseName + "3_3_LOW", sourceImage, 436, 298, 39, 102);
-        textureAtlas.addRegion(baseName + "3_4_LOW", sourceImage, 562, 298, 39, 102);
-        textureAtlas.addRegion(baseName + "3_5_LOW", sourceImage, 688, 298, 39, 102);
-        textureAtlas.addRegion(baseName + "3_6_LOW", sourceImage, 814, 298, 39, 102);
-        textureAtlas.addRegion(baseName + "3_7_LOW", sourceImage, 915, 298, 39, 102);
-        textureAtlas.addRegion(baseName + "3_8_LOW", sourceImage, 1003, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_3_LOW", sourceImage, 310, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_5_LOW", sourceImage, 436, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_7_LOW", sourceImage, 562, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_9_LOW", sourceImage, 688, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_11_LOW", sourceImage, 807, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_13_LOW", sourceImage, 915, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_15_LOW", sourceImage, 1044, 298, 39, 102);
+        // Facing left
+        textureAtlas.addRegion(baseName + "3_2_LOW", sourceImage, 254, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_4_LOW", sourceImage, 379, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_6_LOW", sourceImage, 505, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_8_LOW", sourceImage, 631, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_10_LOW", sourceImage, 757, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_12_LOW", sourceImage, 876, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_14_LOW", sourceImage, 982, 298, 39, 102);
+        textureAtlas.addRegion(baseName + "3_16_LOW", sourceImage, 1044, 298, 39, 102);
     }
 
     private void initSparkRegions() {

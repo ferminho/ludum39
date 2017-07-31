@@ -5,6 +5,7 @@ import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.DisplayComponent;
 import com.alienshots.ludum.component.PositionComponent;
 import com.alienshots.ludum.component.SawComponent;
+import com.alienshots.ludum.component.SawDirectionComponent;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -20,6 +21,7 @@ public class SawMovementSystem extends IteratingSystem implements MovementSystem
 
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<DisplayComponent> displayMapper;
+    private final ComponentMapper<SawDirectionComponent> directionMapper;
     private final List<Entity> sawReserve;
     private final Timer delayBetweenSaws;
 
@@ -28,6 +30,7 @@ public class SawMovementSystem extends IteratingSystem implements MovementSystem
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         displayMapper = ComponentMapper.getFor(DisplayComponent.class);
+        directionMapper = ComponentMapper.getFor(SawDirectionComponent.class);
         sawReserve = new ArrayList<>();
         delayBetweenSaws = Time.newTimer(2);
     }
@@ -52,19 +55,37 @@ public class SawMovementSystem extends IteratingSystem implements MovementSystem
 
     private void moveSaw(Entity saw) {
         AtlasCoordinates coords = positionMapper.get(saw).getCoords();
+        SawDirectionComponent direction = directionMapper.get(saw);
 
-        coords.setColumn(coords.getColumn() - 1);
-        if (coords.getColumn() == 0) {
-            coords.setColumn(7);
-            displayMapper.get(saw).setVisible(false);
+        if (direction.getDirection() == SawDirectionComponent.Direction.LEFT) {
+            if (coords.getColumn() % 2 == 0) // just changed direction, move to "odd space"
+                coords.setColumn(coords.getColumn() + 1);
+            coords.setColumn(coords.getColumn() - 2);
+            if (coords.getColumn() == -1) {
+                coords.setColumn(13);
+                displayMapper.get(saw).setVisible(false);
+            }
+        } else {
+            if (coords.getColumn() % 2 != 0) // just changed direction, move to "even space"
+                coords.setColumn(coords.getColumn() - 1);
+            coords.setColumn(coords.getColumn() + 2);
+            if (coords.getColumn() == 16) {
+                coords.setColumn(2);
+                displayMapper.get(saw).setVisible(false);
+            }
         }
         positionMapper.get(saw).setRegion(GameScreenAtlas.instance.getScreenTexture(SawComponent.class, coords));
     }
 
     private void throwNewSaw(Entity saw) {
         AtlasCoordinates coords = positionMapper.get(saw).getCoords();
+        SawDirectionComponent direction = directionMapper.get(saw);
 
-        positionMapper.get(saw).getCoords().setColumn(7);
+        if (direction.getDirection() == SawDirectionComponent.Direction.LEFT) {
+            positionMapper.get(saw).getCoords().setColumn(13);
+        } else {
+            positionMapper.get(saw).getCoords().setColumn(2);
+        }
         displayMapper.get(saw).setVisible(true);
         positionMapper.get(saw).setRegion(GameScreenAtlas.instance.getScreenTexture(SawComponent.class, coords));
     }

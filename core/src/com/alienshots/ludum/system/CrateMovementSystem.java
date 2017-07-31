@@ -2,10 +2,7 @@ package com.alienshots.ludum.system;
 
 import com.alienshots.ludum.Time;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
-import com.alienshots.ludum.component.CrateComponent;
-import com.alienshots.ludum.component.DisplayComponent;
-import com.alienshots.ludum.component.PositionComponent;
-import com.alienshots.ludum.component.SawComponent;
+import com.alienshots.ludum.component.*;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -21,6 +18,7 @@ public class CrateMovementSystem extends IteratingSystem implements MovementSyst
 
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<DisplayComponent> displayMapper;
+    private final ComponentMapper<CrateDirectionComponent> directionMapper;
     private final List<Entity> crateReserve;
     private final Timer delayBetweenCrates;
 
@@ -29,6 +27,7 @@ public class CrateMovementSystem extends IteratingSystem implements MovementSyst
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         displayMapper = ComponentMapper.getFor(DisplayComponent.class);
+        directionMapper = ComponentMapper.getFor(CrateDirectionComponent.class);
         crateReserve = new ArrayList<>();
         delayBetweenCrates = Time.newTimer(3);
     }
@@ -53,19 +52,37 @@ public class CrateMovementSystem extends IteratingSystem implements MovementSyst
 
     private void moveCrate(Entity crate) {
         AtlasCoordinates coords = positionMapper.get(crate).getCoords();
+        CrateDirectionComponent direction = directionMapper.get(crate);
 
-        coords.setColumn(coords.getColumn() + 1);
-        if (coords.getColumn() == 9) {
-            coords.setColumn(1);
-            displayMapper.get(crate).setVisible(false);
+        if (direction.getDirection() == CrateDirectionComponent.Direction.LEFT) {
+            if (coords.getColumn() % 2 != 0) // just changed direction, move to "even space"
+                coords.setColumn(coords.getColumn() + 1);
+            coords.setColumn(coords.getColumn() - 2);
+            if (coords.getColumn() == 0) {
+                coords.setColumn(16);
+                displayMapper.get(crate).setVisible(false);
+            }
+        } else {
+            if (coords.getColumn() % 2 == 0) // just changed direction, move to "odd space"
+                coords.setColumn(coords.getColumn() - 1);
+            coords.setColumn(coords.getColumn() + 2);
+            if (coords.getColumn() == 17) {
+                coords.setColumn(1);
+                displayMapper.get(crate).setVisible(false);
+            }
         }
         positionMapper.get(crate).setRegion(GameScreenAtlas.instance.getScreenTexture(CrateComponent.class, coords));
     }
 
     private void throwNewCrate(Entity crate) {
         AtlasCoordinates coords = positionMapper.get(crate).getCoords();
+        CrateDirectionComponent direction = directionMapper.get(crate);
 
-        positionMapper.get(crate).getCoords().setColumn(1);
+        if (direction.getDirection() == CrateDirectionComponent.Direction.LEFT) {
+            positionMapper.get(crate).getCoords().setColumn(16);
+        } else {
+            positionMapper.get(crate).getCoords().setColumn(1);
+        }
         displayMapper.get(crate).setVisible(true);
         positionMapper.get(crate).setRegion(GameScreenAtlas.instance.getScreenTexture(CrateComponent.class, coords));
     }

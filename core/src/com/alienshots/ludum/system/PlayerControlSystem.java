@@ -66,7 +66,7 @@ public class PlayerControlSystem extends IteratingSystem {
     private boolean canMoveRight(AtlasCoordinates coords) {
         if (coords.getVerticalPosition() != VerticalPosition.LOW)
             return false;
-        if (coords.getLevel() < 4)
+        if (coords.getLevel() < 3)
             return coords.getColumn() < 8;
         return coords.getColumn() < 7;
     }

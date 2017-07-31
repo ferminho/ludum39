@@ -16,6 +16,8 @@ public class GameEntitiesFactory {
         Entity world = new Entity();
         world.add(new WorldComponent());
         world.add(new WorldChargeComponent());
+        world.add(new SawDirectionComponent(SawDirectionComponent.Direction.LEFT));
+        world.add(new CrateDirectionComponent(CrateDirectionComponent.Direction.RIGHT));
         return world;
     }
 
@@ -53,7 +55,7 @@ public class GameEntitiesFactory {
         return generator;
     }
 
-    public Entity createPlayer(Entity generator, Entity lever) {
+    public Entity createPlayer(Entity generator, Entity lever, Entity world) {
         Entity player = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(1, 1, VerticalPosition.LOW);
 
@@ -65,6 +67,8 @@ public class GameEntitiesFactory {
         player.add(new FlyingBatteryLaunchComponent());
         player.add(generator.getComponent(GeneratorLevelComponent.class));
         player.add(lever.getComponent(LeverStateComponent.class));
+        player.add(world.getComponent(SawDirectionComponent.class));
+        player.add(world.getComponent(CrateDirectionComponent.class));
         return player;
     }
 
@@ -102,13 +106,14 @@ public class GameEntitiesFactory {
         return flyingBattery;
     }
 
-    public Entity createSaw() {
+    public Entity createSaw(Entity world) {
         Entity saw = new Entity();
-        AtlasCoordinates initialCoords = new AtlasCoordinates(1, 7, VerticalPosition.LOW);
+        AtlasCoordinates initialCoords = new AtlasCoordinates(1, 13, VerticalPosition.LOW);
 
         saw.add(new SawComponent());
         saw.add(new DisplayComponent(false));
         saw.add(buildPositionComponent(SawComponent.class, initialCoords));
+        saw.add(world.getComponent(SawDirectionComponent.class));
         return saw;
     }
 
@@ -121,13 +126,14 @@ public class GameEntitiesFactory {
         return drop;
     }
 
-    public Entity createCrate() {
+    public Entity createCrate(Entity world) {
         Entity crate = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(3, 1, VerticalPosition.LOW);
 
         crate.add(new CrateComponent());
         crate.add(new DisplayComponent(false));
         crate.add(buildPositionComponent(CrateComponent.class, initialCoords));
+        crate.add(world.getComponent(CrateDirectionComponent.class));
         return crate;
     }
 
