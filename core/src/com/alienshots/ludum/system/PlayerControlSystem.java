@@ -1,5 +1,6 @@
 package com.alienshots.ludum.system;
 
+import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.CollisionComponent;
 import com.alienshots.ludum.component.PlayerComponent;
@@ -42,14 +43,19 @@ public class PlayerControlSystem extends IteratingSystem {
         }
 
         if (pressedLeft() && canMoveLeft(coords)) {
+            playMovementSound();
             coords.setColumn(coords.getColumn() - 1);
         } else if (pressedRight() && canMoveRight(coords)) {
+            playMovementSound();
             coords.setColumn(coords.getColumn() + 1);
         } else if (pressedUp()) {
+            playMovementSound();
             tryToMoveUp(coords);
         } else if (pressedDown()) {
+            playMovementSound();
             tryToMoveDown(coords);
         } else if (pressedJump() && canJump(coords)) {
+            playJumpSound();
             playerComponent.startJump();
             coords.setVerticalPosition(VerticalPosition.HIGH);
         }
@@ -133,5 +139,12 @@ public class PlayerControlSystem extends IteratingSystem {
         return false;
     }
 
+    private void playMovementSound() {
+        SoundManager.instance.play(SoundManager.SFX_MOV);
+    }
+
+    private void playJumpSound() {
+        SoundManager.instance.play(SoundManager.SFX_JUMP);
+    }
 
 }

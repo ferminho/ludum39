@@ -75,6 +75,7 @@ public class GameScreenAtlas {
         textureAtlas.addRegion(baseName + "2_5_HIGH", sourceImage, 652, 431, 28, 30);
         textureAtlas.addRegion(baseName + "2_6_HIGH", sourceImage, 778, 426, 28, 30);
         textureAtlas.addRegion(baseName + "2_7_HIGH", sourceImage, 907, 427, 28, 30);
+        textureAtlas.addRegion(baseName + "2_8_HIGH", sourceImage, 1033, 434, 28, 30);
         // third floor
         textureAtlas.addRegion(baseName + "3_1_LOW", sourceImage, 227, 363, 26, 37);
         textureAtlas.addRegion(baseName + "3_2_LOW", sourceImage, 351, 363, 26, 37);
@@ -83,7 +84,6 @@ public class GameScreenAtlas {
         textureAtlas.addRegion(baseName + "3_5_LOW", sourceImage, 729, 363, 26, 37);
         textureAtlas.addRegion(baseName + "3_6_LOW", sourceImage, 848, 363, 26, 37);
         textureAtlas.addRegion(baseName + "3_7_LOW", sourceImage, 955, 354, 25, 36);
-        textureAtlas.addRegion(baseName + "3_8_LOW", sourceImage, 1044, 363, 26, 37);
         textureAtlas.addRegion(baseName + "3_1_HIGH", sourceImage, 226, 314, 28, 30);
         textureAtlas.addRegion(baseName + "3_2_HIGH", sourceImage, 350, 307, 28, 30);
         textureAtlas.addRegion(baseName + "3_3_HIGH", sourceImage, 476, 309, 28, 30);

@@ -1,5 +1,6 @@
 package com.alienshots.ludum.system;
 
+import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.Time;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.DisplayComponent;
@@ -47,6 +48,7 @@ public class DropMovementSystem extends IteratingSystem implements MovementSyste
                 coords.setVerticalPosition(GameScreenAtlas.VerticalPosition.MEDIUM);
                 break;
             case MEDIUM:
+                SoundManager.instance.play(SoundManager.SFX_DROP);
                 coords.setVerticalPosition(GameScreenAtlas.VerticalPosition.LOW);
                 break;
             case LOW:
