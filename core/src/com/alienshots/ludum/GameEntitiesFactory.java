@@ -63,7 +63,6 @@ public class GameEntitiesFactory {
         player.add(new CollisionComponent());
         player.add(new DisplayComponent(true));
         player.add(buildPositionComponent(PlayerComponent.class, initialCoords));
-        player.add(new LifeComponent(3));
         player.add(new BatteryItemComponent(true));
         player.add(new FlyingBatteryLaunchComponent());
         player.add(generator.getComponent(GeneratorLevelComponent.class));
@@ -82,17 +81,6 @@ public class GameEntitiesFactory {
         batteryItemIndicator.add(new DisplayComponent(true));
         batteryItemIndicator.add(buildPositionComponent(BatteryItemComponent.class, initialCoords));
         return batteryItemIndicator;
-    }
-
-    public Entity createLifeIndicator(Entity player) {
-        Entity lifeIndicator = new Entity();
-        LifeComponent lifeComponent = player.getComponent(LifeComponent.class);
-        AtlasCoordinates initialCoords = new AtlasCoordinates(0, lifeComponent.getLives(), VerticalPosition.LOW);
-
-        lifeIndicator.add(lifeComponent);
-        lifeIndicator.add(new DisplayComponent(true));
-        lifeIndicator.add(buildPositionComponent(LifeComponent.class, initialCoords));
-        return lifeIndicator;
     }
 
     public Entity createFlyingBattery(Entity player, Entity generator) {

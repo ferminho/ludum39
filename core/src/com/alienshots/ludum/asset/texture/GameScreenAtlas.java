@@ -38,7 +38,6 @@ public class GameScreenAtlas {
         initFlyingBatteryRegions();
         initGeneratorRegions();
         initBatteryItemIndicatorRegions();
-        initLifeIndicatorRegions();
         initChargeIndicatorRegions();
     }
 
@@ -226,14 +225,6 @@ public class GameScreenAtlas {
     private void initBatteryItemIndicatorRegions() {
         String baseName = BatteryItemComponent.class.getName();
         textureAtlas.addRegion(baseName + "0_1_LOW", sourceImage, 191, 89, 46, 22);
-    }
-
-    private void initLifeIndicatorRegions() {
-        String baseName = LifeComponent.class.getName();
-        textureAtlas.addRegion(baseName + "0_1_LOW", sourceImage, 250, 87, 24, 25);
-        textureAtlas.addRegion(baseName + "0_2_LOW", sourceImage, 250, 87, 57, 25);
-        textureAtlas.addRegion(baseName + "0_3_LOW", sourceImage, 250, 87, 90, 25);
-        textureAtlas.addRegion(baseName + "0_4_LOW", sourceImage, 250, 87, 123, 25);
     }
 
     private void initChargeIndicatorRegions() {
