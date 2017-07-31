@@ -51,11 +51,12 @@ public class PlayerCollisionSystem extends IteratingSystem {
         int prevPlayerColumnX2 = playerPreviousCoords.getColumn() * 2;
         int sawColumn = positionMapper.get(saw).getCoords().getColumn();
 
-        if (playerCoords.getLevel() != 1 || sawCoords.getColumn() < 3) return false;
+        if (playerCoords.getLevel() != 1 || sawColumn < 3) return false;
         if (prevPlayerColumnX2 == 2) return false; // not killing player if getting down from battery packs
         if (playerColumnX2 == prevPlayerColumnX2) return false;
         boolean crossesLeft = prevPlayerColumnX2 > sawColumn && playerColumnX2 <= sawColumn;
         boolean crossesRight = prevPlayerColumnX2 <= sawColumn && playerColumnX2 > sawColumn;
+        return crossesLeft || crossesRight;
     }
 
     private boolean dropCollides(Entity drop) {
