@@ -7,7 +7,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 
 import static com.alienshots.ludum.asset.texture.GameScreenAtlas.AtlasCoordinates;
-import static com.alienshots.ludum.asset.texture.GameScreenAtlas.VerticalPosition;
+import static com.alienshots.ludum.system.collision.CollisionUtils.resetPlayer;
 
 /**
  * Checks collisions using the player's time reference
@@ -37,10 +37,9 @@ public class PlayerCollisionSystem extends IteratingSystem {
 
         if (!displayMapper.get(hazard).isVisible()) return;
 
-        AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
         if ((sawMapper.has(hazard) && sawCollides(hazard))
                 ||(dropMapper.has(hazard) && dropCollides(hazard))) {
-            resetPlayer();
+            resetPlayer(player);
         }
     }
 
@@ -65,12 +64,5 @@ public class PlayerCollisionSystem extends IteratingSystem {
         return (playerCoords.getColumn() - 1 - dropCoords.getColumn())
                 + (playerPreviousCoords.getColumn() - 1 - dropCoords.getColumn()) == -1
                 && playerCoords.getVerticalPosition().ordinal() + 1 == dropCoords.getVerticalPosition().ordinal();
-    }
-
-    private void resetPlayer() {
-        AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
-        playerCoords.setLevel(1);
-        playerCoords.setColumn(1);
-        playerCoords.setVerticalPosition(VerticalPosition.LOW);
     }
 }

@@ -106,7 +106,6 @@ public class PowerCharge extends ApplicationAdapter {
     }
 
     private void initSystems() {
-        engine.addSystem(new RenderSystem(camera, world));
         engine.addSystem(new WorldChargeDrainerSystem());
         engine.addSystem(new GeneratorActivatorSystem());
         engine.addSystem(new LeverMovementSystem());
@@ -122,5 +121,6 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
         engine.addSystem(new BatteryItemIndicatorUpdateSystem());
         engine.addSystem(new LifeIndicatorUpdateSystem());
+        engine.addSystem(new RenderSystem(camera, world));
     }
 }

@@ -9,6 +9,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 
 import static com.alienshots.ludum.asset.texture.GameScreenAtlas.AtlasCoordinates;
 import static com.alienshots.ludum.asset.texture.GameScreenAtlas.VerticalPosition;
+import static com.alienshots.ludum.system.collision.CollisionUtils.resetPlayer;
 
 /**
  * Checks collisions using the game's global time reference (class is tagged with MovementSystem)
@@ -40,10 +41,9 @@ public class HazardCollisionSystem extends IteratingSystem implements MovementSy
 
         CollisionComponent playerCollisionComponent = collisionMapper.get(player);
         AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
-        if (sawMapper.has(hazard) && playerCoords.getLevel() == 1) {
-            if (sawCollides(hazard)) resetPlayer();
-        } else if (dropMapper.has(hazard) && playerCoords.getLevel() == 2) {
-            if (dropCollides(hazard)) resetPlayer();
+        if ((sawMapper.has(hazard) && sawCollides(hazard))
+                || (dropMapper.has(hazard) && dropCollides(hazard))) {
+            resetPlayer(player);
         }
         playerCollisionComponent.setPrevPosInGameTimeRef(playerCoords);
     }
@@ -52,6 +52,8 @@ public class HazardCollisionSystem extends IteratingSystem implements MovementSy
         AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
         AtlasCoordinates sawCoords = positionMapper.get(saw).getCoords();
         AtlasCoordinates previousSawCoords = collisionMapper.get(saw).getPrevPosInGameTimeRef();
+
+        if (playerCoords.getLevel() != 1) return false;
 
         return playerCoords.getVerticalPosition() == VerticalPosition.LOW
                 && (playerCoords.getColumn() - sawCoords.getColumn() == 1)
@@ -62,14 +64,9 @@ public class HazardCollisionSystem extends IteratingSystem implements MovementSy
         AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
         AtlasCoordinates dropCoords = positionMapper.get(drop).getCoords();
 
+        if (playerCoords.getLevel() != 2) return false;
+
         return playerCoords.getColumn() - 1 == dropCoords.getColumn()
                 && playerCoords.getVerticalPosition().ordinal() + 1 == dropCoords.getVerticalPosition().ordinal();
-    }
-
-    private void resetPlayer() {
-        AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
-        playerCoords.setLevel(1);
-        playerCoords.setColumn(1);
-        playerCoords.setVerticalPosition(VerticalPosition.LOW);
     }
 }
