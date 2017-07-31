@@ -1,10 +1,7 @@
 package com.alienshots.ludum;
 
 import com.badlogic.gdx.Gdx;
-import jdk.nashorn.internal.objects.annotations.Constructor;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -56,6 +53,24 @@ public class Time {
         public boolean isTicking() {
             return elapsed == 0;
         }
+    }
+
+    public static class SpanTimer {
+        private int span;
+        private int accumulatedTime;
+        @Getter
+        private boolean finished;
+
+        public SpanTimer(int span) {
+            this.span = span;
+        }
+
+        public void update() {
+            accumulatedTime += Gdx.graphics.getDeltaTime() * 1000f;
+            if (accumulatedTime >= span)
+                finished = true;
+        }
+
     }
 
     public static class BlinkingTimer {
