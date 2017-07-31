@@ -11,28 +11,41 @@ public class GameEntitiesFactory {
 
     public static final GameEntitiesFactory instance = new GameEntitiesFactory();
 
-    public Entity createGenerator() {
+    public Entity createLever() {
+        Entity lever = new Entity();
+        AtlasCoordinates initialCoords = new AtlasCoordinates(4, 1, VerticalPosition.LOW);
+
+        lever.add(new LeverComponent());
+        lever.add(new LeverStateComponent(true));
+        lever.add(new DisplayComponent(true));
+        lever.add(buildPositionComponent(LeverComponent.class, initialCoords));
+        return lever;
+    }
+
+    public Entity createGenerator(Entity lever) {
         Entity generator = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(4, 1, VerticalPosition.LOW);
 
         generator.add(new GeneratorComponent());
         generator.add(new GeneratorLevelComponent());
         generator.add(new DisplayComponent(false));
-        generator.add(buildPositionComponent(GeneratorLevelComponent.class, initialCoords));
+        generator.add(lever.getComponent(LeverStateComponent.class));
+        generator.add(buildPositionComponent(GeneratorComponent.class, initialCoords));
         return generator;
     }
 
-    public Entity createPlayer(Entity generator) {
+    public Entity createPlayer(Entity generator, Entity lever) {
         Entity player = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(1, 1, VerticalPosition.LOW);
 
-        player.add(generator.getComponent(GeneratorLevelComponent.class));
         player.add(new PlayerComponent());
         player.add(new DisplayComponent(true));
         player.add(buildPositionComponent(PlayerComponent.class, initialCoords));
         player.add(new LifeComponent(3));
         player.add(new BatteryItemComponent(true));
         player.add(new FlyingBatteryLaunchComponent());
+        player.add(generator.getComponent(GeneratorLevelComponent.class));
+        player.add(lever.getComponent(LeverStateComponent.class));
         return player;
     }
 

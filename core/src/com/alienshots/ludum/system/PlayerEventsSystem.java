@@ -15,6 +15,7 @@ public class PlayerEventsSystem extends IteratingSystem {
     private final ComponentMapper<BatteryItemComponent> batteryMapper;
     private final ComponentMapper<FlyingBatteryLaunchComponent> batteryLaunchMapper;
     private final ComponentMapper<GeneratorLevelComponent> generatorLevelMapper;
+    private final ComponentMapper<LeverStateComponent> leverStateMapper;
 
     public PlayerEventsSystem() {
         super(Family.all(PlayerComponent.class).get());
@@ -23,6 +24,7 @@ public class PlayerEventsSystem extends IteratingSystem {
         batteryMapper = ComponentMapper.getFor(BatteryItemComponent.class);
         batteryLaunchMapper = ComponentMapper.getFor(FlyingBatteryLaunchComponent.class);
         generatorLevelMapper = ComponentMapper.getFor(GeneratorLevelComponent.class);
+        leverStateMapper = ComponentMapper.getFor(LeverStateComponent.class);
     }
 
     @Override
@@ -32,15 +34,20 @@ public class PlayerEventsSystem extends IteratingSystem {
         BatteryItemComponent battery = batteryMapper.get(player);
         FlyingBatteryLaunchComponent batteryLauncher = batteryLaunchMapper.get(player);
         GeneratorLevelComponent generatorLevel = generatorLevelMapper.get(player);
+        LeverStateComponent leverState = leverStateMapper.get(player);
 
         if (coords.getLevel() == 1 && coords.getColumn() == 1) {
             battery.setCarryingBattery(true);
         }
-        if (battery.isCarryingBattery() && coords.getLevel() == 4 && coords.getColumn() == 7 &&
-                generatorLevel.getLevel() < GeneratorLevelComponent.MAX_LEVEL &&
-                coords.getVerticalPosition() == VerticalPosition.HIGH) {
-            batteryLauncher.setToBeLaunched(true);
-            battery.setCarryingBattery(false);
+        if (coords.getLevel() == 4) {
+            if (battery.isCarryingBattery() && coords.getColumn() == 7 &&
+                    generatorLevel.getLevel() < GeneratorLevelComponent.MAX_LEVEL &&
+                    coords.getVerticalPosition() == VerticalPosition.HIGH) {
+                batteryLauncher.setToBeLaunched(true);
+                battery.setCarryingBattery(false);
+            } else if (coords.getColumn() == 1 && !leverState.isChargePosition()) {
+                leverState.setChargePosition(true);
+            }
         }
     }
 }

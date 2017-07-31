@@ -76,6 +76,9 @@ public class PowerCharge extends ApplicationAdapter {
 
     private void initSystems() {
         engine.addSystem(new RenderSystem(camera));
+        engine.addSystem(new LeverMovementSystem());
+        engine.addSystem(new GeneratorActivatorSystem());
+        engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
         engine.addSystem(new PlayerControlSystem());
         engine.addSystem(new PlayerEventsSystem());
         engine.addSystem(new SawMovementSystem());
@@ -84,14 +87,15 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addSystem(new FlyingBatteryMovementSystem());
         engine.addSystem(new BatteryItemIndicatorUpdateSystem());
         engine.addSystem(new LifeIndicatorUpdateSystem());
-        engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
     }
 
     private void initEntities() {
         GameEntitiesFactory factory = GameEntitiesFactory.instance;
-        Entity generator = factory.createGenerator();
+        Entity lever = factory.createLever();
+        engine.addEntity(lever);
+        Entity generator = factory.createGenerator(lever);
         engine.addEntity(generator);
-        Entity player = factory.createPlayer(generator);
+        Entity player = factory.createPlayer(generator, lever);
         engine.addEntity(player);
         engine.addEntity(factory.createBatteryItemIndicator(player));
         engine.addEntity(factory.createLifeIndicator(player));

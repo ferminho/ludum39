@@ -38,6 +38,6 @@ public class GeneratorLevelIndicatorUpdateSystem extends IteratingSystem {
         }
         displayComponent.setVisible(visible);
         coords.setColumn(column);
-        positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(GeneratorLevelComponent.class, coords));
+        positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(GeneratorComponent.class, coords));
     }
 }

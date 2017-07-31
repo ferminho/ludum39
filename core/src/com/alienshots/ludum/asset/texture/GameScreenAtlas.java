@@ -35,7 +35,7 @@ public class GameScreenAtlas {
         initLeverRegions();
         initDecoSparkRegions();
         initFlyingBatteryRegions();
-        initGeneratorLevelRegions();
+        initGeneratorRegions();
         initBatteryItemIndicatorRegions();
         initLifeIndicatorRegions();
         initChargeIndicatorRegions();
@@ -198,8 +198,8 @@ public class GameScreenAtlas {
         textureAtlas.addRegion(baseName + "4_1_LOW", sourceImage, 990, 184, 18, 15);
     }
 
-    private void initGeneratorLevelRegions() {
-        String baseName = GeneratorLevelComponent.class.getName();
+    private void initGeneratorRegions() {
+        String baseName = GeneratorComponent.class.getName();
         textureAtlas.addRegion(baseName + "4_1_LOW", sourceImage, 997, 254, 7, 15);
         textureAtlas.addRegion(baseName + "4_2_LOW", sourceImage, 997, 254, 16, 15);
         textureAtlas.addRegion(baseName + "4_3_LOW", sourceImage, 997, 254, 25, 15);
