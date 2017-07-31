@@ -9,7 +9,6 @@ import com.badlogic.ashley.systems.IteratingSystem;
 
 import static com.alienshots.ludum.asset.texture.GameScreenAtlas.AtlasCoordinates;
 import static com.alienshots.ludum.asset.texture.GameScreenAtlas.VerticalPosition;
-import static com.alienshots.ludum.system.collision.CollisionUtils.resetPlayer;
 
 /**
  * Checks collisions using the game's global time reference (class is tagged with MovementSystem)
@@ -46,7 +45,7 @@ public class HazardCollisionSystem extends IteratingSystem implements MovementSy
         if ((sawMapper.has(hazard) && sawCollides(hazard))
                 || (dropMapper.has(hazard) && dropCollides(hazard))
                 || (crateMapper.has(hazard) && crateCollides(hazard))) {
-            resetPlayer(player);
+            player.add(new PlayerEventComponent(true));
         }
         playerCollisionComponent.setPrevPosInGameTimeRef(playerCoords);
     }

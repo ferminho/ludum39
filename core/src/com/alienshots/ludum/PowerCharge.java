@@ -115,6 +115,7 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addSystem(new FlyingBatteryMovementSystem());
         engine.addSystem(new HazardCollisionSystem(player));
         engine.addSystem(new PlayerCollisionSystem(player));
+        engine.addSystem(new PlayerWatchDogSystem());
         engine.addSystem(new ChargeIndicatorUpdateSystem());
         engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
         engine.addSystem(new BatteryItemIndicatorUpdateSystem());
