@@ -7,10 +7,6 @@ public class GeneratorLevelComponent implements Component {
 
     private int level;
 
-    public GeneratorLevelComponent(int level) {
-        this.level = level;
-    }
-
     public int getLevel() {
         return level;
     }

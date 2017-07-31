@@ -2,8 +2,6 @@ package com.alienshots.ludum;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,8 +22,6 @@ public class SoundManager {
     public static final String SFX_SAW_TURN = "sawturn01.wav";
     public static final String SFX_CRATE_TURN = "boxturn01.wav";
 
-    @Getter
-    @Setter
     private float pitch = 1.0f;
     private HashMap<String, Sound> sounds = new HashMap<>();
 
@@ -40,12 +36,21 @@ public class SoundManager {
     }
 
     public void play(String soundName) {
-        play(soundName, pitch);
+        play(soundName, getPitch());
     }
     public void play(String soundName, float pitch) {
         Sound sound = sounds.get(soundName);
         sound.stop();
         if (pitch > 0.0f)
             sound.play(1f, pitch, 0f);
+    }
+
+
+    public float getPitch() {
+        return pitch;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
     }
 }
