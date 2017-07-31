@@ -22,6 +22,7 @@ public class HazardCollisionSystem extends IteratingSystem implements MovementSy
     private final ComponentMapper<CollisionComponent> collisionMapper;
     private final ComponentMapper<SawComponent> sawMapper;
     private final ComponentMapper<DropComponent> dropMapper;
+    private final ComponentMapper<CrateComponent> crateMapper;
 
     public HazardCollisionSystem(Entity player) {
         super(Family.all(HazardComponent.class).get());
@@ -32,6 +33,7 @@ public class HazardCollisionSystem extends IteratingSystem implements MovementSy
         this.collisionMapper = ComponentMapper.getFor(CollisionComponent.class);
         this.sawMapper = ComponentMapper.getFor(SawComponent.class);
         this.dropMapper = ComponentMapper.getFor(DropComponent.class);
+        this.crateMapper = ComponentMapper.getFor(CrateComponent.class);
     }
 
     @Override
@@ -42,7 +44,8 @@ public class HazardCollisionSystem extends IteratingSystem implements MovementSy
         CollisionComponent playerCollisionComponent = collisionMapper.get(player);
         AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
         if ((sawMapper.has(hazard) && sawCollides(hazard))
-                || (dropMapper.has(hazard) && dropCollides(hazard))) {
+                || (dropMapper.has(hazard) && dropCollides(hazard))
+                || (crateMapper.has(hazard) && crateCollides(hazard))) {
             resetPlayer(player);
         }
         playerCollisionComponent.setPrevPosInGameTimeRef(playerCoords);
@@ -54,8 +57,9 @@ public class HazardCollisionSystem extends IteratingSystem implements MovementSy
         int sawColumn = positionMapper.get(saw).getCoords().getColumn();
         int prevSawColumn = collisionMapper.get(saw).getPrevPosInGameTimeRef().getColumn();
 
-        if (playerCoords.getLevel() != 1 || playerCoords.getVerticalPosition() != VerticalPosition.LOW)
+        if (playerCoords.getLevel() != 1 || playerCoords.getVerticalPosition() != VerticalPosition.LOW) {
             return false;
+        }
 
         boolean collisionFromRight = playerColumnX2 == prevSawColumn && playerColumnX2 == (sawColumn + 2);
         boolean collisionFromLeft = playerColumnX2 == (sawColumn - 1) && playerColumnX2 == (prevSawColumn + 1) ||
@@ -71,5 +75,19 @@ public class HazardCollisionSystem extends IteratingSystem implements MovementSy
 
         return playerCoords.getColumn() - 1 == dropCoords.getColumn()
                 && playerCoords.getVerticalPosition().ordinal() + 1 == dropCoords.getVerticalPosition().ordinal();
+    }
+
+    private boolean crateCollides(Entity crate) {
+        AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
+        int playerColumnX2 = playerCoords.getColumn() * 2;
+        int crateColumn = positionMapper.get(crate).getCoords().getColumn();
+        int prevCrateColumn = collisionMapper.get(crate).getPrevPosInGameTimeRef().getColumn();
+
+        if (playerCoords.getLevel() != 3) return false;
+
+        boolean collisionFromRight = playerColumnX2 == prevCrateColumn && playerColumnX2 == (crateColumn + 2);
+        boolean collisionFromLeft = playerColumnX2 == (crateColumn - 1) && playerColumnX2 == (prevCrateColumn + 1) ||
+                crateColumn == 1 && playerColumnX2 == (prevCrateColumn + 1);
+        return collisionFromLeft || collisionFromRight;
     }
 }

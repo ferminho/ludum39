@@ -20,6 +20,7 @@ public class PlayerCollisionSystem extends IteratingSystem {
     private final ComponentMapper<DisplayComponent> displayMapper;
     private final ComponentMapper<SawComponent> sawMapper;
     private final ComponentMapper<DropComponent> dropMapper;
+    private final ComponentMapper<CrateComponent> crateMapper;
 
     public PlayerCollisionSystem(Entity player) {
         super(Family.all(HazardComponent.class).get());
@@ -30,6 +31,7 @@ public class PlayerCollisionSystem extends IteratingSystem {
         this.displayMapper = ComponentMapper.getFor(DisplayComponent.class);
         this.sawMapper = ComponentMapper.getFor(SawComponent.class);
         this.dropMapper = ComponentMapper.getFor(DropComponent.class);
+        this.crateMapper = ComponentMapper.getFor(CrateComponent.class);
     }
 
     @Override
@@ -38,7 +40,8 @@ public class PlayerCollisionSystem extends IteratingSystem {
         if (!displayMapper.get(hazard).isVisible()) return;
 
         if ((sawMapper.has(hazard) && sawCollides(hazard))
-                ||(dropMapper.has(hazard) && dropCollides(hazard))) {
+                || (dropMapper.has(hazard) && dropCollides(hazard))
+                || (crateMapper.has(hazard) && crateCollides(hazard))) {
             resetPlayer(player);
         }
     }
@@ -69,5 +72,21 @@ public class PlayerCollisionSystem extends IteratingSystem {
         return (playerCoords.getColumn() - 1 - dropCoords.getColumn())
                 + (playerPreviousCoords.getColumn() - 1 - dropCoords.getColumn()) == -1
                 && playerCoords.getVerticalPosition().ordinal() + 1 == dropCoords.getVerticalPosition().ordinal();
+    }
+
+    private boolean crateCollides(Entity crate) {
+        AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
+        int playerColumnX2 = playerCoords.getColumn() * 2;
+        AtlasCoordinates playerPreviousCoords = collisionMapper.get(player).getPrevPosInPlayerTimeRef();
+        int prevPlayerColumnX2 = playerPreviousCoords.getColumn() * 2;
+        int crateColumn = positionMapper.get(crate).getCoords().getColumn();
+
+        if (playerCoords.getLevel() != 3) return false;
+
+        if (prevPlayerColumnX2 == 2) return false; // not killing player if getting down from battery packs
+        if (playerColumnX2 == prevPlayerColumnX2) return false;
+        boolean crossesLeft = prevPlayerColumnX2 > crateColumn && playerColumnX2 <= crateColumn;
+        boolean crossesRight = prevPlayerColumnX2 <= crateColumn && playerColumnX2 > crateColumn;
+        return crossesLeft || crossesRight;
     }
 }

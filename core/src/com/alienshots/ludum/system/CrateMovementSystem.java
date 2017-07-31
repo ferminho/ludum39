@@ -19,6 +19,7 @@ public class CrateMovementSystem extends IteratingSystem implements MovementSyst
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<DisplayComponent> displayMapper;
     private final ComponentMapper<CrateDirectionComponent> directionMapper;
+    private final ComponentMapper<CollisionComponent> collisionMapper;
     private final List<Entity> crateReserve;
     private final Timer delayBetweenCrates;
 
@@ -28,6 +29,7 @@ public class CrateMovementSystem extends IteratingSystem implements MovementSyst
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         displayMapper = ComponentMapper.getFor(DisplayComponent.class);
         directionMapper = ComponentMapper.getFor(CrateDirectionComponent.class);
+        collisionMapper = ComponentMapper.getFor(CollisionComponent.class);
         crateReserve = new ArrayList<>();
         delayBetweenCrates = Time.newTimer(3);
     }
@@ -35,6 +37,9 @@ public class CrateMovementSystem extends IteratingSystem implements MovementSyst
     @Override
     protected void processEntity(Entity crate, float deltaTime) {
         DisplayComponent displayComponent = displayMapper.get(crate);
+
+        collisionMapper.get(crate).setPrevPosInGameTimeRef(positionMapper.get(crate).getCoords());
+
         if (displayComponent.isVisible()) {
             moveCrate(crate);
         } else if (delayBetweenCrates.isTicking()) {

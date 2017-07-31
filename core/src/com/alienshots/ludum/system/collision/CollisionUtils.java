@@ -1,7 +1,6 @@
 package com.alienshots.ludum.system.collision;
 
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
-import com.alienshots.ludum.component.CollisionComponent;
 import com.alienshots.ludum.component.PlayerComponent;
 import com.alienshots.ludum.component.PositionComponent;
 import com.badlogic.ashley.core.ComponentMapper;

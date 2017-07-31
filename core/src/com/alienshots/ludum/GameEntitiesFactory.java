@@ -136,6 +136,8 @@ public class GameEntitiesFactory {
         AtlasCoordinates initialCoords = new AtlasCoordinates(3, 1, VerticalPosition.LOW);
 
         crate.add(new CrateComponent());
+        crate.add(new HazardComponent());
+        crate.add(new CollisionComponent());
         crate.add(new DisplayComponent(false));
         crate.add(buildPositionComponent(CrateComponent.class, initialCoords));
         crate.add(world.getComponent(CrateDirectionComponent.class));
