@@ -13,8 +13,16 @@ public class SoundManager {
 
     public static final String SFX_JUMP = "jmp01.wav";
     public static final String SFX_MOV = "mov01.wav";
-    public static final String SFX_DIE = "die01.wav";
+    public static final String SFX_DIE = "die03.wav";
     public static final String SFX_DROP = "drop01.wav";
+    public static final String SFX_SAW = "saw01.wav";
+    public static final String SFX_GENERATOR_UP = "generator01.wav";
+    public static final String SFX_POWER_UP = "poweringup01.wav";
+    public static final String SFX_SWITCH_OFF = "switchoff01.wav";
+    public static final String SFX_THROW_BATTERY = "throw01.wav";
+    public static final String SFX_CRATE = "box01.wav";
+    public static final String SFX_SAW_TURN = "sawturn01.wav";
+    public static final String SFX_CRATE_TURN = "boxturn01.wav";
 
     @Getter
     @Setter
@@ -23,7 +31,9 @@ public class SoundManager {
 
     public SoundManager() {
         Arrays.stream(new String[]{
-                SFX_JUMP, SFX_MOV, SFX_DIE, SFX_DROP
+                SFX_JUMP, SFX_MOV, SFX_DIE, SFX_DROP, SFX_SAW, SFX_GENERATOR_UP,
+                SFX_POWER_UP, SFX_SWITCH_OFF, SFX_THROW_BATTERY, SFX_CRATE,
+                SFX_SAW_TURN, SFX_CRATE_TURN
                 }).forEach((s) -> {
             sounds.put(s, Gdx.audio.newSound(Gdx.files.internal(s)));
         });

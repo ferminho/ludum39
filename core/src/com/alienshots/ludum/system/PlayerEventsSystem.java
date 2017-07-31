@@ -1,5 +1,6 @@
 package com.alienshots.ludum.system;
 
+import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.component.*;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -46,16 +47,25 @@ public class PlayerEventsSystem extends IteratingSystem {
             if (coords.getColumn() == 1) {
                 // PICK UP BATTERY
                 battery.setCarryingBattery(true);
-                // SAWS MOVING TO THE RIGHT
-                sawDirection.setDirection(SawDirectionComponent.Direction.LEFT);
+                if (sawDirection.getDirection() == SawDirectionComponent.Direction.RIGHT) {
+                    // SAWS MOVING TO THE LEFT
+                    sawDirection.setDirection(SawDirectionComponent.Direction.LEFT);
+                    SoundManager.instance.play(SoundManager.SFX_SAW_TURN);
+                 }
             } else if (coords.getColumn() == 8) {
-                // SAWS MOVING TO THE LEFT
-                sawDirection.setDirection(SawDirectionComponent.Direction.RIGHT);
+                if (sawDirection.getDirection() == SawDirectionComponent.Direction.LEFT) {
+                    // SAWS MOVING TO THE RIGHT
+                    sawDirection.setDirection(SawDirectionComponent.Direction.RIGHT);
+                    SoundManager.instance.play(SoundManager.SFX_SAW_TURN);
+                }
             }
         } else if (coords.getLevel() == 2) {
             if (coords.getColumn() == 1 && coords.getVerticalPosition() == VerticalPosition.HIGH) {
-                // CRATES MOVING TO THE RIGHT
-                crateDirection.setDirection(CrateDirectionComponent.Direction.RIGHT);
+                if (crateDirection.getDirection() == CrateDirectionComponent.Direction.LEFT) {
+                    // CRATES MOVING TO THE RIGHT
+                    crateDirection.setDirection(CrateDirectionComponent.Direction.RIGHT);
+                    SoundManager.instance.play(SoundManager.SFX_CRATE_TURN);
+                }
             }
         } else if (coords.getLevel() == 4) {
             if (coords.getColumn() == 1) {
@@ -70,10 +80,14 @@ public class PlayerEventsSystem extends IteratingSystem {
                         // THROW BATTERY
                         batteryLauncher.setToBeLaunched(true);
                         battery.setCarryingBattery(false);
+                        SoundManager.instance.play(SoundManager.SFX_THROW_BATTERY);
                     }
                 } else if (coords.getVerticalPosition() == VerticalPosition.LOW) {
                     // CRATES MOVING TO THE LEFT
-                    crateDirection.setDirection(CrateDirectionComponent.Direction.LEFT);
+                    if (crateDirection.getDirection() == CrateDirectionComponent.Direction.RIGHT) {
+                        crateDirection.setDirection(CrateDirectionComponent.Direction.LEFT);
+                        SoundManager.instance.play(SoundManager.SFX_CRATE_TURN);
+                    }
                 }
             }
         }

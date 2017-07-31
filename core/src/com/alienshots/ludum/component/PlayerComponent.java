@@ -1,5 +1,6 @@
 package com.alienshots.ludum.component;
 
+import com.alienshots.ludum.Time;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.Gdx;
 
@@ -25,14 +26,14 @@ public class PlayerComponent implements Component {
     public static class Jump {
         private static final Jump NOT_JUMPING = new Jump();
 
-        private static final int JUMP_DURATION_IN_MS = 1000;
+        private static final float JUMP_DURATION_TICKS = 0.85f;
 
         int jumpElapsedInMs = 0;
 
         public boolean isOver() {
             jumpElapsedInMs += Gdx.graphics.getDeltaTime() * 1000;
 
-            if (jumpElapsedInMs >= JUMP_DURATION_IN_MS) {
+            if (jumpElapsedInMs >= Time.instance.getGameSpeedInMs() * JUMP_DURATION_TICKS) {
                 jumpElapsedInMs -= jumpElapsedInMs;
                 return true;
             } else return false;

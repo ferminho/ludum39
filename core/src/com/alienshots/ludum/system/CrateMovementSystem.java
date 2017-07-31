@@ -1,5 +1,6 @@
 package com.alienshots.ludum.system;
 
+import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.Time;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.*;
@@ -90,5 +91,6 @@ public class CrateMovementSystem extends IteratingSystem implements MovementSyst
         }
         displayMapper.get(crate).setVisible(true);
         positionMapper.get(crate).setRegion(GameScreenAtlas.instance.getScreenTexture(CrateComponent.class, coords));
+        SoundManager.instance.play(SoundManager.SFX_CRATE);
     }
 }

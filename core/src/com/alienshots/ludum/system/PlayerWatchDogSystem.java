@@ -1,6 +1,7 @@
 package com.alienshots.ludum.system;
 
 import static com.alienshots.ludum.Time.BlinkingTimer;
+import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.*;
 import com.badlogic.ashley.core.ComponentMapper;
@@ -43,17 +44,22 @@ public class PlayerWatchDogSystem extends IteratingSystem {
 
     private void killTheFool(Entity player) {
         if (blinkingTimer != null && blinkingTimer.isFinished()) {
-            displayMapper.get(player).setVisible(true);
-            blinkingTimer = null;
-            resetPlayer(player);
-            player.remove(PlayerEventComponent.class);
+            completeDeath(player);
         } else {
             if (blinkingTimer == null) {
+                SoundManager.instance.play(SoundManager.SFX_DIE);
                 blinkingTimer = new BlinkingTimer(BLINK_INTERVAL_MS, 6, false);
             }
             blinkingTimer.update();
             displayMapper.get(player).setVisible(blinkingTimer.isBlinkState());
         }
+    }
+
+    private void completeDeath(Entity player) {
+        blinkingTimer = null;
+        resetPlayer(player);
+        displayMapper.get(player).setVisible(true);
+        player.remove(PlayerEventComponent.class);
     }
 
     private void resetPlayer(Entity player) {
@@ -81,5 +87,4 @@ public class PlayerWatchDogSystem extends IteratingSystem {
         playerCoords.setColumn(7);
         playerCoords.setVerticalPosition(VerticalPosition.LOW);
     }
-
 }

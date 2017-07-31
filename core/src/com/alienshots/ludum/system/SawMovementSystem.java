@@ -1,5 +1,6 @@
 package com.alienshots.ludum.system;
 
+import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.Time;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.CollisionComponent;
@@ -94,5 +95,7 @@ public class SawMovementSystem extends IteratingSystem implements MovementSystem
         }
         displayMapper.get(saw).setVisible(true);
         positionMapper.get(saw).setRegion(GameScreenAtlas.instance.getScreenTexture(SawComponent.class, coords));
+
+        SoundManager.instance.play(SoundManager.SFX_SAW);
     }
 }

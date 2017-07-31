@@ -1,5 +1,6 @@
 package com.alienshots.ludum.system;
 
+import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.Time;
 import com.alienshots.ludum.component.DisplayComponent;
 import com.alienshots.ludum.component.FlyingBatteryComponent;
@@ -42,6 +43,7 @@ public class FlyingBatteryMovementSystem extends IteratingSystem {
             if (flyingTimer.isFinished()) {
                 flyingTimer = null;
                 levelComponent.setLevel(levelComponent.getLevel() + 1);
+                SoundManager.instance.play(SoundManager.SFX_GENERATOR_UP);
                 visible = false;
             } else {
                 visible = true;

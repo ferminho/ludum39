@@ -21,13 +21,17 @@ public class WorldChargeDrainerSystem extends IteratingSystem implements Movemen
     @Override
     protected void processEntity(Entity world, float deltaTime) {
         WorldChargeComponent worldCharge = worldChargeMapper.get(world);
-        worldCharge.setChargeLevel(worldCharge.getChargeLevel() - WorldChargeComponent.CHARGE_LOSS_PER_TICK);
-        if (worldCharge.getChargeLevel() < 0f)
-            worldCharge.setChargeLevel(0f);
-        float chargeRatio = worldCharge.getChargeLevel() / WorldChargeComponent.MAX_CHARGE;
-        if (chargeRatio > .5f)
-            SoundManager.instance.setPitch(1f);
-        else
-            SoundManager.instance.setPitch(chargeRatio * 2f);
+        if (worldCharge.getChargeLevel() > 0f) {
+            worldCharge.setChargeLevel(worldCharge.getChargeLevel() - WorldChargeComponent.CHARGE_LOSS_PER_TICK);
+            if (worldCharge.getChargeLevel() < 0f) {
+                worldCharge.setChargeLevel(0f);
+                SoundManager.instance.play(SoundManager.SFX_SWITCH_OFF, 1f);
+            }
+            float chargeRatio = worldCharge.getChargeLevel() / WorldChargeComponent.MAX_CHARGE;
+            if (chargeRatio > .5f)
+                SoundManager.instance.setPitch(1f);
+            else
+                SoundManager.instance.setPitch(chargeRatio * 2f);
+        }
     }
 }
