@@ -4,6 +4,10 @@ import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.system.*;
 import com.alienshots.ludum.system.collision.HazardsCollisionSystem;
 import com.alienshots.ludum.system.collision.PlayerCollisionSystem;
+import com.alienshots.ludum.system.ui.BatteryItemIndicatorUpdateSystem;
+import com.alienshots.ludum.system.ui.ChargeIndicatorUpdateSystem;
+import com.alienshots.ludum.system.ui.GeneratorLevelIndicatorUpdateSystem;
+import com.alienshots.ludum.system.ui.LifeIndicatorUpdateSystem;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -22,6 +26,8 @@ public class PowerCharge extends ApplicationAdapter {
     private Batch batch;
     private Texture backgroundTexture;
     private Engine engine;
+    private Entity world;
+    private Entity player;
 
     @Override
 	public void create () {
@@ -69,23 +75,52 @@ public class PowerCharge extends ApplicationAdapter {
     private void initEngine() {
         engine = new Engine();
 
-        Entity player = GameEntitiesFactory.instance.createPlayer();
-        initEntities(player);
-        initSystems(player);
+        initEntities();
+        initSystems();
     }
 
-    private void initSystems(Entity player) {
+    private void initEntities() {
+        GameEntitiesFactory factory = GameEntitiesFactory.instance;
+        world = GameEntitiesFactory.instance.createWorld();
+        engine.addEntity(world);
+        engine.addEntity(factory.createChargeIndicator(world));
+        Entity lever = factory.createLever();
+        engine.addEntity(lever);
+        Entity generator = factory.createGenerator(lever, world);
+        engine.addEntity(generator);
+        player = GameEntitiesFactory.instance.createPlayer(generator, lever);
+        engine.addEntity(player);
+        engine.addEntity(factory.createBatteryItemIndicator(player));
+        engine.addEntity(factory.createLifeIndicator(player));
+        engine.addEntity(factory.createFlyingBattery(player, generator));
+        IntStream.range(0,3).forEach(i ->
+                engine.addEntity(factory.createSaw())
+        );
+        engine.addEntity(factory.createDrop(1, 1));
+        engine.addEntity(factory.createDrop(2, 3));
+        engine.addEntity(factory.createDrop(4, 2));
+        engine.addEntity(factory.createDrop(6, 1));
+        IntStream.range(0,3).forEach(i ->
+                engine.addEntity(factory.createCrate())
+        );
+    }
+
+    private void initSystems() {
+        engine.addSystem(new RenderSystem(camera, world));
+        engine.addSystem(new WorldChargeDrainerSystem());
+        engine.addSystem(new LeverMovementSystem());
+        engine.addSystem(new GeneratorActivatorSystem());
+        engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
         engine.addSystem(new PlayerControlSystem());
+        engine.addSystem(new PlayerEventsSystem());
         engine.addSystem(new SawMovementSystem());
         engine.addSystem(new HazardsCollisionSystem(player));
         engine.addSystem(new PlayerCollisionSystem(player));
-        engine.addSystem(new RenderSystem(camera));
-    }
-
-    private void initEntities(Entity player) {
-        engine.addEntity(player);
-        IntStream.range(0,3).forEach(i ->
-                engine.addEntity(GameEntitiesFactory.instance.createSaw())
-        );
+        engine.addSystem(new DropMovementSystem());
+        engine.addSystem(new CrateMovementSystem());
+        engine.addSystem(new FlyingBatteryMovementSystem());
+        engine.addSystem(new ChargeIndicatorUpdateSystem());
+        engine.addSystem(new BatteryItemIndicatorUpdateSystem());
+        engine.addSystem(new LifeIndicatorUpdateSystem());
     }
 }
