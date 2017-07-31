@@ -68,7 +68,10 @@ public class Time {
         @Getter
         private boolean finished;
 
-        // timer finishes after x blinks (state changes) max=2 initial true would be true,false, then finished with true
+        /**
+         Timer finishes after x blinks (state changes); max=2 initial=true would be true,false, then finish with true
+         @param maxBlinks <=0 : blink forever
+          */
         public BlinkingTimer(int blinkIntervalMs, int maxBlinks, boolean initialState) {
             this.blinkIntervalMs = blinkIntervalMs;
             this.maxBlinks = maxBlinks;
@@ -79,7 +82,7 @@ public class Time {
         public void update() {
             accumulatedTime += Gdx.graphics.getDeltaTime() * 1000f;
             int blinks;
-            if (accumulatedTime >= maxBlinks * blinkIntervalMs) {
+            if (maxBlinks > 0 && accumulatedTime >= maxBlinks * blinkIntervalMs) {
                 finished = true;
                 blinks = maxBlinks;
             } else {
