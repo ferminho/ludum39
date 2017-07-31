@@ -1,6 +1,5 @@
 package com.alienshots.ludum.system.collision;
 
-import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.*;
 import com.alienshots.ludum.system.MovementSystem;
 import com.badlogic.ashley.core.ComponentMapper;
@@ -9,34 +8,42 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 
 import static com.alienshots.ludum.asset.texture.GameScreenAtlas.AtlasCoordinates;
+import static com.alienshots.ludum.asset.texture.GameScreenAtlas.VerticalPosition;
 
 /**
  * Checks collisions using the game's global time reference (class is tagged with MovementSystem)
  */
-public class HazardsCollisionSystem extends IteratingSystem implements MovementSystem {
+public class HazardCollisionSystem extends IteratingSystem implements MovementSystem {
 
     private final Entity player;
+    private final ComponentMapper<DisplayComponent> displayMapper;
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<CollisionComponent> collisionMapper;
     private final ComponentMapper<SawComponent> sawMapper;
+    private final ComponentMapper<DropComponent> dropMapper;
 
-    public HazardsCollisionSystem(Entity player) {
+    public HazardCollisionSystem(Entity player) {
         super(Family.all(HazardComponent.class).get());
 
         this.player = player;
+        this.displayMapper = ComponentMapper.getFor(DisplayComponent.class);
         this.positionMapper = ComponentMapper.getFor(PositionComponent.class);
         this.collisionMapper = ComponentMapper.getFor(CollisionComponent.class);
         this.sawMapper = ComponentMapper.getFor(SawComponent.class);
+        this.dropMapper = ComponentMapper.getFor(DropComponent.class);
     }
 
     @Override
     protected void processEntity(Entity hazard, float deltaTime) {
+
+        if (!displayMapper.get(hazard).isVisible()) return;
+
         CollisionComponent playerCollisionComponent = collisionMapper.get(player);
         AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
         if (sawMapper.has(hazard) && playerCoords.getLevel() == 1) {
-            if (sawCollides(hazard)) {
-                playerCoords.setColumn(1);
-            }
+            if (sawCollides(hazard)) resetPlayer();
+        } else if (dropMapper.has(hazard) && playerCoords.getLevel() == 2) {
+            if (dropCollides(hazard)) resetPlayer();
         }
         playerCollisionComponent.setPrevPosInGameTimeRef(playerCoords);
     }
@@ -46,8 +53,23 @@ public class HazardsCollisionSystem extends IteratingSystem implements MovementS
         AtlasCoordinates sawCoords = positionMapper.get(saw).getCoords();
         AtlasCoordinates previousSawCoords = collisionMapper.get(saw).getPrevPosInGameTimeRef();
 
-        return playerCoords.getVerticalPosition() == GameScreenAtlas.VerticalPosition.LOW
+        return playerCoords.getVerticalPosition() == VerticalPosition.LOW
                 && (playerCoords.getColumn() - sawCoords.getColumn() == 1)
                 && (playerCoords.getColumn() - previousSawCoords.getColumn() == 0);
+    }
+
+    private boolean dropCollides(Entity drop) {
+        AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
+        AtlasCoordinates dropCoords = positionMapper.get(drop).getCoords();
+
+        return playerCoords.getColumn() - 1 == dropCoords.getColumn()
+                && playerCoords.getVerticalPosition().ordinal() + 1 == dropCoords.getVerticalPosition().ordinal();
+    }
+
+    private void resetPlayer() {
+        AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
+        playerCoords.setLevel(1);
+        playerCoords.setColumn(1);
+        playerCoords.setVerticalPosition(VerticalPosition.LOW);
     }
 }

@@ -119,6 +119,8 @@ public class GameEntitiesFactory {
         Entity drop = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(2, column, VerticalPosition.HIGH);
         drop.add(new DropComponent(Time.newTimer(delayInUpdates)));
+        drop.add(new HazardComponent());
+        drop.add(new CollisionComponent());
         drop.add(new DisplayComponent(false));
         drop.add(buildPositionComponent(DropComponent.class, initialCoords));
         return drop;

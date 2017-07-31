@@ -2,7 +2,7 @@ package com.alienshots.ludum;
 
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.system.*;
-import com.alienshots.ludum.system.collision.HazardsCollisionSystem;
+import com.alienshots.ludum.system.collision.HazardCollisionSystem;
 import com.alienshots.ludum.system.collision.PlayerCollisionSystem;
 import com.alienshots.ludum.system.ui.BatteryItemIndicatorUpdateSystem;
 import com.alienshots.ludum.system.ui.ChargeIndicatorUpdateSystem;
@@ -108,18 +108,18 @@ public class PowerCharge extends ApplicationAdapter {
     private void initSystems() {
         engine.addSystem(new RenderSystem(camera, world));
         engine.addSystem(new WorldChargeDrainerSystem());
-        engine.addSystem(new LeverMovementSystem());
         engine.addSystem(new GeneratorActivatorSystem());
-        engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
+        engine.addSystem(new LeverMovementSystem());
         engine.addSystem(new PlayerControlSystem());
         engine.addSystem(new PlayerEventsSystem());
         engine.addSystem(new SawMovementSystem());
-        engine.addSystem(new HazardsCollisionSystem(player));
-        engine.addSystem(new PlayerCollisionSystem(player));
         engine.addSystem(new DropMovementSystem());
         engine.addSystem(new CrateMovementSystem());
         engine.addSystem(new FlyingBatteryMovementSystem());
+        engine.addSystem(new HazardCollisionSystem(player));
+        engine.addSystem(new PlayerCollisionSystem(player));
         engine.addSystem(new ChargeIndicatorUpdateSystem());
+        engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
         engine.addSystem(new BatteryItemIndicatorUpdateSystem());
         engine.addSystem(new LifeIndicatorUpdateSystem());
     }
