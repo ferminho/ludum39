@@ -7,7 +7,6 @@ import com.alienshots.ludum.system.collision.PlayerCollisionSystem;
 import com.alienshots.ludum.system.ui.BatteryItemIndicatorUpdateSystem;
 import com.alienshots.ludum.system.ui.ChargeIndicatorUpdateSystem;
 import com.alienshots.ludum.system.ui.GeneratorLevelIndicatorUpdateSystem;
-import com.alienshots.ludum.system.ui.LifeIndicatorUpdateSystem;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -91,7 +90,6 @@ public class PowerCharge extends ApplicationAdapter {
         player = factory.createPlayer(generator, lever, world);
         engine.addEntity(player);
         engine.addEntity(factory.createBatteryItemIndicator(player));
-        engine.addEntity(factory.createLifeIndicator(player));
         engine.addEntity(factory.createFlyingBattery(player, generator));
         IntStream.range(0,3).forEach(i ->
                 engine.addEntity(factory.createSaw(world))
@@ -117,10 +115,10 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addSystem(new FlyingBatteryMovementSystem());
         engine.addSystem(new HazardCollisionSystem(player));
         engine.addSystem(new PlayerCollisionSystem(player));
+        engine.addSystem(new PlayerWatchDogSystem());
         engine.addSystem(new ChargeIndicatorUpdateSystem());
         engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
         engine.addSystem(new BatteryItemIndicatorUpdateSystem());
-        engine.addSystem(new LifeIndicatorUpdateSystem());
         engine.addSystem(new RenderSystem(camera, world));
     }
 }
