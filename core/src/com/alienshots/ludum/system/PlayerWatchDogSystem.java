@@ -1,5 +1,6 @@
 package com.alienshots.ludum.system;
 
+import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.component.BatteryItemComponent;
 import com.alienshots.ludum.component.PlayerComponent;
@@ -39,6 +40,7 @@ public class PlayerWatchDogSystem extends IteratingSystem {
     }
 
     public void resetPlayer(Entity player) {
+        SoundManager.instance.play(SoundManager.SFX_DIE);
         if (batteryItemMapper.get(player).isCarryingBattery()) {
             resetToLowerLevel(player);
         } else {
