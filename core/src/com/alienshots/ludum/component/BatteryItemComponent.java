@@ -1,13 +1,19 @@
 package com.alienshots.ludum.component;
 
 import com.badlogic.ashley.core.Component;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
 public class BatteryItemComponent implements Component {
+    public BatteryItemComponent(boolean carryingBattery) {
+        this.carryingBattery = carryingBattery;
+    }
+
     private boolean carryingBattery;
+
+    public boolean isCarryingBattery() {
+        return carryingBattery;
+    }
+
+    public void setCarryingBattery(boolean carryingBattery) {
+        this.carryingBattery = carryingBattery;
+    }
 }
