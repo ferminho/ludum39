@@ -16,6 +16,8 @@ public class PlayerEventsSystem extends IteratingSystem {
     private final ComponentMapper<FlyingBatteryLaunchComponent> batteryLaunchMapper;
     private final ComponentMapper<GeneratorLevelComponent> generatorLevelMapper;
     private final ComponentMapper<LeverStateComponent> leverStateMapper;
+    private final ComponentMapper<SawDirectionComponent> sawDirectionMapper;
+    private final ComponentMapper<CrateDirectionComponent> crateDirectionMapper;
 
     public PlayerEventsSystem() {
         super(Family.all(PlayerComponent.class).get());
@@ -25,6 +27,8 @@ public class PlayerEventsSystem extends IteratingSystem {
         batteryLaunchMapper = ComponentMapper.getFor(FlyingBatteryLaunchComponent.class);
         generatorLevelMapper = ComponentMapper.getFor(GeneratorLevelComponent.class);
         leverStateMapper = ComponentMapper.getFor(LeverStateComponent.class);
+        sawDirectionMapper = ComponentMapper.getFor(SawDirectionComponent.class);
+        crateDirectionMapper = ComponentMapper.getFor(CrateDirectionComponent.class);
     }
 
     @Override
@@ -35,18 +39,42 @@ public class PlayerEventsSystem extends IteratingSystem {
         FlyingBatteryLaunchComponent batteryLauncher = batteryLaunchMapper.get(player);
         GeneratorLevelComponent generatorLevel = generatorLevelMapper.get(player);
         LeverStateComponent leverState = leverStateMapper.get(player);
+        SawDirectionComponent sawDirection = sawDirectionMapper.get(player);
+        CrateDirectionComponent crateDirection = crateDirectionMapper.get(player);
 
-        if (coords.getLevel() == 1 && coords.getColumn() == 1) {
-            battery.setCarryingBattery(true);
-        }
-        if (coords.getLevel() == 4) {
-            if (battery.isCarryingBattery() && coords.getColumn() == 7 &&
-                    generatorLevel.getLevel() < GeneratorLevelComponent.MAX_LEVEL &&
-                    coords.getVerticalPosition() == VerticalPosition.HIGH) {
-                batteryLauncher.setToBeLaunched(true);
-                battery.setCarryingBattery(false);
-            } else if (coords.getColumn() == 1 && !leverState.isChargePosition()) {
-                leverState.setChargePosition(true);
+        if (coords.getLevel() == 1) {
+            if (coords.getColumn() == 1) {
+                // PICK UP BATTERY
+                battery.setCarryingBattery(true);
+                // SAWS MOVING TO THE RIGHT
+                sawDirection.setDirection(SawDirectionComponent.Direction.LEFT);
+            } else if (coords.getColumn() == 8) {
+                // SAWS MOVING TO THE LEFT
+                sawDirection.setDirection(SawDirectionComponent.Direction.RIGHT);
+            }
+        } else if (coords.getLevel() == 2) {
+            if (coords.getColumn() == 1 && coords.getVerticalPosition() == VerticalPosition.HIGH) {
+                // CRATES MOVING TO THE RIGHT
+                crateDirection.setDirection(CrateDirectionComponent.Direction.RIGHT);
+            }
+        } else if (coords.getLevel() == 4) {
+            if (coords.getColumn() == 1) {
+                if (!leverState.isChargePosition()) {
+                    // PUSH LEVER
+                    leverState.setChargePosition(true);
+                }
+            } else if (coords.getColumn() == 7) {
+                if (coords.getVerticalPosition() == VerticalPosition.HIGH) {
+                    if (battery.isCarryingBattery() && coords.getColumn() == 7 &&
+                            generatorLevel.getLevel() < GeneratorLevelComponent.MAX_LEVEL) {
+                        // THROW BATTERY
+                        batteryLauncher.setToBeLaunched(true);
+                        battery.setCarryingBattery(false);
+                    }
+                } else if (coords.getVerticalPosition() == VerticalPosition.LOW) {
+                    // CRATES MOVING TO THE LEFT
+                    crateDirection.setDirection(CrateDirectionComponent.Direction.LEFT);
+                }
             }
         }
     }

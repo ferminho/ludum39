@@ -88,20 +88,20 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addEntity(lever);
         Entity generator = factory.createGenerator(lever, world);
         engine.addEntity(generator);
-        player = GameEntitiesFactory.instance.createPlayer(generator, lever);
+        player = factory.createPlayer(generator, lever, world);
         engine.addEntity(player);
         engine.addEntity(factory.createBatteryItemIndicator(player));
         engine.addEntity(factory.createLifeIndicator(player));
         engine.addEntity(factory.createFlyingBattery(player, generator));
         IntStream.range(0,3).forEach(i ->
-                engine.addEntity(factory.createSaw())
+                engine.addEntity(factory.createSaw(world))
         );
         engine.addEntity(factory.createDrop(1, 1));
         engine.addEntity(factory.createDrop(2, 3));
         engine.addEntity(factory.createDrop(4, 2));
         engine.addEntity(factory.createDrop(6, 1));
         IntStream.range(0,3).forEach(i ->
-                engine.addEntity(factory.createCrate())
+                engine.addEntity(factory.createCrate(world))
         );
     }
 

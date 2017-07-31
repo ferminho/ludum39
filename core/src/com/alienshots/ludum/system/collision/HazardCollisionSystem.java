@@ -50,14 +50,17 @@ public class HazardCollisionSystem extends IteratingSystem implements MovementSy
 
     private boolean sawCollides(Entity saw) {
         AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
-        AtlasCoordinates sawCoords = positionMapper.get(saw).getCoords();
-        AtlasCoordinates previousSawCoords = collisionMapper.get(saw).getPrevPosInGameTimeRef();
+        int playerColumnX2 = playerCoords.getColumn() * 2;
+        int sawColumn = positionMapper.get(saw).getCoords().getColumn();
+        int prevSawColumn = collisionMapper.get(saw).getPrevPosInGameTimeRef().getColumn();
 
-        if (playerCoords.getLevel() != 1) return false;
+        if (playerCoords.getLevel() != 1 || playerCoords.getVerticalPosition() != VerticalPosition.LOW)
+            return false;
 
-        return playerCoords.getVerticalPosition() == VerticalPosition.LOW
-                && (playerCoords.getColumn() - sawCoords.getColumn() == 1)
-                && (playerCoords.getColumn() - previousSawCoords.getColumn() == 0);
+        boolean collisionFromRight = playerColumnX2 == prevSawColumn && playerColumnX2 == (sawColumn + 2);
+        boolean collisionFromLeft = playerColumnX2 == (sawColumn - 1) && playerColumnX2 == (prevSawColumn + 1) ||
+                                    sawColumn == 1 && playerColumnX2 == (prevSawColumn + 1);
+        return collisionFromLeft || collisionFromRight;
     }
 
     private boolean dropCollides(Entity drop) {

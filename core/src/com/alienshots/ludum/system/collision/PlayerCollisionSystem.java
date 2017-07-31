@@ -45,13 +45,18 @@ public class PlayerCollisionSystem extends IteratingSystem {
 
     private boolean sawCollides(Entity saw) {
         AtlasCoordinates playerCoords = positionMapper.get(player).getCoords();
+        int playerColumnX2 = playerCoords.getColumn() * 2;
         AtlasCoordinates playerPreviousCoords = collisionMapper.get(player).getPrevPosInPlayerTimeRef();
-        AtlasCoordinates sawCoords = positionMapper.get(saw).getCoords();
+        int prevPlayerColumnX2 = playerPreviousCoords.getColumn() * 2;
+        int sawColumn = positionMapper.get(saw).getCoords().getColumn();
 
-        if (playerCoords.getLevel() != 1 || sawCoords.getColumn() < 2) return false;
+        if (playerCoords.getLevel() != 1 || sawColumn < 3) return false;
 
-        return (playerCoords.getColumn() - sawCoords.getColumn())
-                + (playerPreviousCoords.getColumn() - sawCoords.getColumn()) == 1;
+        if (prevPlayerColumnX2 == 2) return false; // not killing player if getting down from battery packs
+        if (playerColumnX2 == prevPlayerColumnX2) return false;
+        boolean crossesLeft = prevPlayerColumnX2 > sawColumn && playerColumnX2 <= sawColumn;
+        boolean crossesRight = prevPlayerColumnX2 <= sawColumn && playerColumnX2 > sawColumn;
+        return crossesLeft || crossesRight;
     }
 
     private boolean dropCollides(Entity drop) {
