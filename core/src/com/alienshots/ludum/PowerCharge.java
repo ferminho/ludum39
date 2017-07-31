@@ -3,6 +3,7 @@ package com.alienshots.ludum;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.system.*;
 import com.alienshots.ludum.system.ui.BatteryItemIndicatorUpdateSystem;
+import com.alienshots.ludum.system.ui.ChargeIndicatorUpdateSystem;
 import com.alienshots.ludum.system.ui.GeneratorLevelIndicatorUpdateSystem;
 import com.alienshots.ludum.system.ui.LifeIndicatorUpdateSystem;
 import com.badlogic.ashley.core.Engine;
@@ -76,6 +77,7 @@ public class PowerCharge extends ApplicationAdapter {
 
     private void initSystems() {
         engine.addSystem(new RenderSystem(camera));
+        engine.addSystem(new WorldChargeDrainerSystem());
         engine.addSystem(new LeverMovementSystem());
         engine.addSystem(new GeneratorActivatorSystem());
         engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
@@ -85,12 +87,16 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addSystem(new DropMovementSystem());
         engine.addSystem(new CrateMovementSystem());
         engine.addSystem(new FlyingBatteryMovementSystem());
+        engine.addSystem(new ChargeIndicatorUpdateSystem());
         engine.addSystem(new BatteryItemIndicatorUpdateSystem());
         engine.addSystem(new LifeIndicatorUpdateSystem());
     }
 
     private void initEntities() {
         GameEntitiesFactory factory = GameEntitiesFactory.instance;
+        Entity world = factory.createWorld();
+        engine.addEntity(world);
+        engine.addEntity(factory.createChargeIndicator(world));
         Entity lever = factory.createLever();
         engine.addEntity(lever);
         Entity generator = factory.createGenerator(lever);

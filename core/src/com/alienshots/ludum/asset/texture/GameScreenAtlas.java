@@ -222,16 +222,16 @@ public class GameScreenAtlas {
 
     private void initChargeIndicatorRegions() {
         String baseName = ChargeIndicatorComponent.class.getName();
-        textureAtlas.addRegion(baseName + "0_1_LOW", sourceImage, 939, 91, 15, 18);
-        textureAtlas.addRegion(baseName + "0_2_LOW", sourceImage, 939, 91, 30, 18);
-        textureAtlas.addRegion(baseName + "0_3_LOW", sourceImage, 939, 91, 45, 18);
-        textureAtlas.addRegion(baseName + "0_4_LOW", sourceImage, 939, 91, 60, 18);
-        textureAtlas.addRegion(baseName + "0_5_LOW", sourceImage, 939, 91, 75, 18);
-        textureAtlas.addRegion(baseName + "0_6_LOW", sourceImage, 939, 91, 90, 18);
-        textureAtlas.addRegion(baseName + "0_7_LOW", sourceImage, 939, 91, 105, 18);
-        textureAtlas.addRegion(baseName + "0_8_LOW", sourceImage, 939, 91, 120, 18);
-        textureAtlas.addRegion(baseName + "0_9_LOW", sourceImage, 939, 91, 135, 18);
-        textureAtlas.addRegion(baseName + "0_10_LOW", sourceImage, 939, 91, 150, 18);
+        textureAtlas.addRegion(baseName + "0_1_LOW", sourceImage, 1075, 91, 15, 18);
+        textureAtlas.addRegion(baseName + "0_2_LOW", sourceImage, 1060, 91, 30, 18);
+        textureAtlas.addRegion(baseName + "0_3_LOW", sourceImage, 1045, 91, 45, 18);
+        textureAtlas.addRegion(baseName + "0_4_LOW", sourceImage, 1030, 91, 60, 18);
+        textureAtlas.addRegion(baseName + "0_5_LOW", sourceImage, 1015, 91, 75, 18);
+        textureAtlas.addRegion(baseName + "0_6_LOW", sourceImage, 1000, 91, 90, 18);
+        textureAtlas.addRegion(baseName + "0_7_LOW", sourceImage, 985, 91, 105, 18);
+        textureAtlas.addRegion(baseName + "0_8_LOW", sourceImage, 970, 91, 120, 18);
+        textureAtlas.addRegion(baseName + "0_9_LOW", sourceImage, 955, 91, 135, 18);
+        textureAtlas.addRegion(baseName + "0_10_LOW", sourceImage, 940, 91, 150, 18);
     }
 
     public TextureRegion getScreenTexture(Class<?> tagClass, AtlasCoordinates coords) {

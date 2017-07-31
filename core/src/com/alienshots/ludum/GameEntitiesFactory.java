@@ -11,6 +11,23 @@ public class GameEntitiesFactory {
 
     public static final GameEntitiesFactory instance = new GameEntitiesFactory();
 
+    public Entity createWorld() {
+        Entity world = new Entity();
+        world.add(new WorldComponent());
+        world.add(new WorldChargeComponent());
+        return world;
+    }
+
+    public Entity createChargeIndicator(Entity world) {
+        Entity chargeIndicator = new Entity();
+        AtlasCoordinates initialCoords = new AtlasCoordinates(0, 10, VerticalPosition.LOW);
+        chargeIndicator.add(new ChargeIndicatorComponent());
+        chargeIndicator.add(world.getComponent(WorldChargeComponent.class));
+        chargeIndicator.add(new DisplayComponent(true));
+        chargeIndicator.add(buildPositionComponent(ChargeIndicatorComponent.class, initialCoords));
+        return chargeIndicator;
+    }
+
     public Entity createLever() {
         Entity lever = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(4, 1, VerticalPosition.LOW);
