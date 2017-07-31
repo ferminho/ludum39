@@ -2,6 +2,7 @@ package com.alienshots.ludum.system;
 
 import com.alienshots.ludum.Time;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
+import com.alienshots.ludum.component.CollisionComponent;
 import com.alienshots.ludum.component.DisplayComponent;
 import com.alienshots.ludum.component.PositionComponent;
 import com.alienshots.ludum.component.SawComponent;
@@ -22,6 +23,7 @@ public class SawMovementSystem extends IteratingSystem implements MovementSystem
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<DisplayComponent> displayMapper;
     private final ComponentMapper<SawDirectionComponent> directionMapper;
+    private final ComponentMapper<CollisionComponent> collisionMapper;
     private final List<Entity> sawReserve;
     private final Timer delayBetweenSaws;
 
@@ -31,6 +33,7 @@ public class SawMovementSystem extends IteratingSystem implements MovementSystem
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         displayMapper = ComponentMapper.getFor(DisplayComponent.class);
         directionMapper = ComponentMapper.getFor(SawDirectionComponent.class);
+        collisionMapper = ComponentMapper.getFor(CollisionComponent.class);
         sawReserve = new ArrayList<>();
         delayBetweenSaws = Time.newTimer(2);
     }
@@ -38,6 +41,9 @@ public class SawMovementSystem extends IteratingSystem implements MovementSystem
     @Override
     protected void processEntity(Entity saw, float deltaTime) {
         DisplayComponent displayComponent = displayMapper.get(saw);
+
+        collisionMapper.get(saw).setPrevPosInGameTimeRef(positionMapper.get(saw).getCoords());
+
         if (displayComponent.isVisible()) {
             moveSaw(saw);
         } else if (delayBetweenSaws.isTicking()) {
@@ -58,19 +64,19 @@ public class SawMovementSystem extends IteratingSystem implements MovementSystem
         SawDirectionComponent direction = directionMapper.get(saw);
 
         if (direction.getDirection() == SawDirectionComponent.Direction.LEFT) {
-            if (coords.getColumn() % 2 == 0) // just changed direction, move to "odd space"
+            if (coords.getColumn() % 2 != 0) // just changed direction, move to "even space"
                 coords.setColumn(coords.getColumn() + 1);
             coords.setColumn(coords.getColumn() - 2);
-            if (coords.getColumn() == -1) {
-                coords.setColumn(13);
+            if (coords.getColumn() == 0) {
+                coords.setColumn(14);
                 displayMapper.get(saw).setVisible(false);
             }
         } else {
-            if (coords.getColumn() % 2 != 0) // just changed direction, move to "even space"
+            if (coords.getColumn() % 2 == 0) // just changed direction, move to "odd space"
                 coords.setColumn(coords.getColumn() - 1);
             coords.setColumn(coords.getColumn() + 2);
-            if (coords.getColumn() == 16) {
-                coords.setColumn(2);
+            if (coords.getColumn() == 15) {
+                coords.setColumn(1);
                 displayMapper.get(saw).setVisible(false);
             }
         }
@@ -82,9 +88,9 @@ public class SawMovementSystem extends IteratingSystem implements MovementSystem
         SawDirectionComponent direction = directionMapper.get(saw);
 
         if (direction.getDirection() == SawDirectionComponent.Direction.LEFT) {
-            positionMapper.get(saw).getCoords().setColumn(13);
+            positionMapper.get(saw).getCoords().setColumn(14);
         } else {
-            positionMapper.get(saw).getCoords().setColumn(2);
+            positionMapper.get(saw).getCoords().setColumn(1);
         }
         displayMapper.get(saw).setVisible(true);
         positionMapper.get(saw).setRegion(GameScreenAtlas.instance.getScreenTexture(SawComponent.class, coords));

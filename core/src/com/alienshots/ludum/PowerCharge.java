@@ -1,15 +1,15 @@
 package com.alienshots.ludum;
 
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
-import com.alienshots.ludum.component.WorldComponent;
 import com.alienshots.ludum.system.*;
+import com.alienshots.ludum.system.collision.HazardsCollisionSystem;
+import com.alienshots.ludum.system.collision.PlayerCollisionSystem;
 import com.alienshots.ludum.system.ui.BatteryItemIndicatorUpdateSystem;
 import com.alienshots.ludum.system.ui.ChargeIndicatorUpdateSystem;
 import com.alienshots.ludum.system.ui.GeneratorLevelIndicatorUpdateSystem;
 import com.alienshots.ludum.system.ui.LifeIndicatorUpdateSystem;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -26,6 +26,8 @@ public class PowerCharge extends ApplicationAdapter {
     private Batch batch;
     private Texture backgroundTexture;
     private Engine engine;
+    private Entity world;
+    private Entity player;
 
     @Override
 	public void create () {
@@ -74,42 +76,24 @@ public class PowerCharge extends ApplicationAdapter {
         engine = new Engine();
 
         initEntities();
-        Entity world = engine.getEntitiesFor(Family.all(WorldComponent.class).get()).first();
-        initSystems(world);
-    }
-
-    private void initSystems(Entity world) {
-        engine.addSystem(new RenderSystem(camera, world));
-        engine.addSystem(new WorldChargeDrainerSystem());
-        engine.addSystem(new LeverMovementSystem());
-        engine.addSystem(new GeneratorActivatorSystem());
-        engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
-        engine.addSystem(new PlayerControlSystem());
-        engine.addSystem(new PlayerEventsSystem());
-        engine.addSystem(new SawMovementSystem());
-        engine.addSystem(new DropMovementSystem());
-        engine.addSystem(new CrateMovementSystem());
-        engine.addSystem(new FlyingBatteryMovementSystem());
-        engine.addSystem(new ChargeIndicatorUpdateSystem());
-        engine.addSystem(new BatteryItemIndicatorUpdateSystem());
-        engine.addSystem(new LifeIndicatorUpdateSystem());
+        initSystems();
     }
 
     private void initEntities() {
         GameEntitiesFactory factory = GameEntitiesFactory.instance;
-        Entity world = factory.createWorld();
+        world = GameEntitiesFactory.instance.createWorld();
         engine.addEntity(world);
         engine.addEntity(factory.createChargeIndicator(world));
         Entity lever = factory.createLever();
         engine.addEntity(lever);
         Entity generator = factory.createGenerator(lever, world);
         engine.addEntity(generator);
-        Entity player = factory.createPlayer(generator, lever, world);
+        player = factory.createPlayer(generator, lever, world);
         engine.addEntity(player);
         engine.addEntity(factory.createBatteryItemIndicator(player));
         engine.addEntity(factory.createLifeIndicator(player));
         engine.addEntity(factory.createFlyingBattery(player, generator));
-        IntStream.range(0,3).forEach(i ->
+        IntStream.range(0,1).forEach(i ->
                 engine.addEntity(factory.createSaw(world))
         );
         engine.addEntity(factory.createDrop(1, 1));
@@ -119,5 +103,24 @@ public class PowerCharge extends ApplicationAdapter {
         IntStream.range(0,3).forEach(i ->
                 engine.addEntity(factory.createCrate(world))
         );
+    }
+
+    private void initSystems() {
+        engine.addSystem(new RenderSystem(camera, world));
+        engine.addSystem(new WorldChargeDrainerSystem());
+        engine.addSystem(new LeverMovementSystem());
+        engine.addSystem(new GeneratorActivatorSystem());
+        engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
+        engine.addSystem(new PlayerControlSystem());
+        engine.addSystem(new PlayerEventsSystem());
+        engine.addSystem(new SawMovementSystem());
+        engine.addSystem(new HazardsCollisionSystem(player));
+        engine.addSystem(new PlayerCollisionSystem(player));
+        engine.addSystem(new DropMovementSystem());
+        engine.addSystem(new CrateMovementSystem());
+        engine.addSystem(new FlyingBatteryMovementSystem());
+        engine.addSystem(new ChargeIndicatorUpdateSystem());
+        engine.addSystem(new BatteryItemIndicatorUpdateSystem());
+        engine.addSystem(new LifeIndicatorUpdateSystem());
     }
 }

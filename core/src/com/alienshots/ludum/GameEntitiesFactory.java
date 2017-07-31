@@ -60,6 +60,7 @@ public class GameEntitiesFactory {
         AtlasCoordinates initialCoords = new AtlasCoordinates(1, 1, VerticalPosition.LOW);
 
         player.add(new PlayerComponent());
+        player.add(new CollisionComponent());
         player.add(new DisplayComponent(true));
         player.add(buildPositionComponent(PlayerComponent.class, initialCoords));
         player.add(new LifeComponent(3));
@@ -111,6 +112,8 @@ public class GameEntitiesFactory {
         AtlasCoordinates initialCoords = new AtlasCoordinates(1, 13, VerticalPosition.LOW);
 
         saw.add(new SawComponent());
+        saw.add(new HazardComponent());
+        saw.add(new CollisionComponent());
         saw.add(new DisplayComponent(false));
         saw.add(buildPositionComponent(SawComponent.class, initialCoords));
         saw.add(world.getComponent(SawDirectionComponent.class));
