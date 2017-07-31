@@ -1,11 +1,9 @@
 package com.alienshots.ludum.system;
 
+import static com.alienshots.ludum.Time.BlinkingTimer;
 import com.alienshots.ludum.SoundManager;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
-import com.alienshots.ludum.component.BatteryItemComponent;
-import com.alienshots.ludum.component.PlayerComponent;
-import com.alienshots.ludum.component.PlayerEventComponent;
-import com.alienshots.ludum.component.PositionComponent;
+import com.alienshots.ludum.component.*;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -19,28 +17,52 @@ import static com.alienshots.ludum.asset.texture.GameScreenAtlas.VerticalPositio
  */
 public class PlayerWatchDogSystem extends IteratingSystem {
 
+    private static final int BLINK_INTERVAL_MS = 300;
+
     private final ComponentMapper<PlayerEventComponent> playerEventMapper;
     private final ComponentMapper<PositionComponent> positionMapper;
+    private final ComponentMapper<DisplayComponent> displayMapper;
     private final ComponentMapper<BatteryItemComponent> batteryItemMapper;
 
+    private BlinkingTimer blinkingTimer = null;
+
     public PlayerWatchDogSystem() {
-        super(Family.all(PlayerComponent.class, PlayerEventComponent.class).get());
+        super(Family.all(PlayerComponent.class, PlayerEventComponent.class, DisplayComponent.class).get());
 
         playerEventMapper = ComponentMapper.getFor(PlayerEventComponent.class);
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
+        displayMapper = ComponentMapper.getFor(DisplayComponent.class);
         batteryItemMapper = ComponentMapper.getFor(BatteryItemComponent.class);
     }
 
     @Override
     protected void processEntity(Entity player, float deltaTime) {
         if (playerEventMapper.get(player).isUserDied()) {
-            resetPlayer(player);
+            killTheFool(player);
         }
+    }
+
+    private void killTheFool(Entity player) {
+        if (blinkingTimer != null && blinkingTimer.isFinished()) {
+            completeDeath(player);
+        } else {
+            if (blinkingTimer == null) {
+                SoundManager.instance.play(SoundManager.SFX_DIE);
+                blinkingTimer = new BlinkingTimer(BLINK_INTERVAL_MS, 6, false);
+            }
+            blinkingTimer.update();
+            displayMapper.get(player).setVisible(blinkingTimer.isBlinkState());
+        }
+    }
+
+    private void completeDeath(Entity player) {
+        blinkingTimer = null;
+        resetPlayer(player);
+        displayMapper.get(player).setVisible(true);
         player.remove(PlayerEventComponent.class);
     }
 
-    public void resetPlayer(Entity player) {
-        SoundManager.instance.play(SoundManager.SFX_DIE);
+    private void resetPlayer(Entity player) {
         if (batteryItemMapper.get(player).isCarryingBattery()) {
             resetToLowerLevel(player);
         } else {
@@ -48,8 +70,8 @@ public class PlayerWatchDogSystem extends IteratingSystem {
         }
 
         positionMapper.get(player)
-                .setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class,
-                        positionMapper.get(player).getCoords()));
+                      .setRegion(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class,
+                                                                           positionMapper.get(player).getCoords()));
     }
 
     private void resetToLowerLevel(Entity player) {
@@ -65,5 +87,4 @@ public class PlayerWatchDogSystem extends IteratingSystem {
         playerCoords.setColumn(7);
         playerCoords.setVerticalPosition(VerticalPosition.LOW);
     }
-
 }

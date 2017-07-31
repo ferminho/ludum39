@@ -134,9 +134,6 @@ public class GameEntitiesFactory {
 
     private PositionComponent buildPositionComponent(Class<? extends Component> componentClass,
                                                      AtlasCoordinates initialCoords) {
-        return PositionComponent.builder()
-                .coords(initialCoords)
-                .region(GameScreenAtlas.instance.getScreenTexture(componentClass, initialCoords))
-                .build();
+        return new PositionComponent(initialCoords, GameScreenAtlas.instance.getScreenTexture(componentClass, initialCoords));
     }
 }
