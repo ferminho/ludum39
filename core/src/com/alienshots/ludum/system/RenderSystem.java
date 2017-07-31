@@ -55,7 +55,7 @@ public class RenderSystem extends IteratingSystem {
                              if (region == null)
                                  System.out.println("NO REGION TO DRAW");
                              else
-                                batch.draw(region, region.getRegionX(), flippedY(region));
+                                 batch.draw(region, region.getRegionX(), flippedY(region));
                          });
         batch.end();
         entities.clear();

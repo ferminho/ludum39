@@ -3,6 +3,7 @@ package com.alienshots.ludum;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.system.*;
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -79,7 +80,9 @@ public class PowerCharge extends ApplicationAdapter {
     }
 
     private void initEntities() {
-        engine.addEntity(GameEntitiesFactory.instance.createPlayer());
+        Entity player = GameEntitiesFactory.instance.createPlayer();
+        engine.addEntity(player);
+        engine.addEntity(GameEntitiesFactory.instance.createLifeIndicator(player));
         IntStream.range(0,3).forEach(i ->
                 engine.addEntity(GameEntitiesFactory.instance.createSaw())
         );

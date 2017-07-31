@@ -20,7 +20,23 @@ public class GameEntitiesFactory {
                                     .coords(initialCoords)
                                     .region(GameScreenAtlas.instance.getScreenTexture(PlayerComponent.class, initialCoords))
                                     .build());
+        player.add(new LifeComponent(3));
         return player;
+    }
+
+    public Entity createLifeIndicator(Entity player) {
+        Entity lifeIndicator = new Entity();
+        LifeComponent lifeComponent = player.getComponent(LifeComponent.class);
+
+        AtlasCoordinates initialCoords = new AtlasCoordinates(0, lifeComponent.getLives(), VerticalPosition.LOW);
+
+        lifeIndicator.add(lifeComponent);
+        lifeIndicator.add(new DisplayComponent(true));
+        lifeIndicator.add(PositionComponent.builder()
+                .coords(initialCoords)
+                .region(GameScreenAtlas.instance.getScreenTexture(LifeComponent.class, initialCoords))
+                .build());
+        return lifeIndicator;
     }
 
     public Entity createSaw() {

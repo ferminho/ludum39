@@ -208,10 +208,14 @@ public class GameScreenAtlas {
 
     private void initLifeRegions() {
         String baseName = LifeComponent.class.getName();
+        // initially I defined 4 regions for each life indicator, afterwards I defined 4 regions for 1 life, 2 lives, etc
         textureAtlas.addRegion(baseName + "0_1_LOW", sourceImage, 250, 87, 24, 25);
-        textureAtlas.addRegion(baseName + "0_2_LOW", sourceImage, 283, 87, 24, 25);
-        textureAtlas.addRegion(baseName + "0_3_LOW", sourceImage, 316, 87, 24, 25);
-        textureAtlas.addRegion(baseName + "0_4_LOW", sourceImage, 349, 87, 24, 25);
+//        textureAtlas.addRegion(baseName + "0_2_LOW", sourceImage, 283, 87, 24, 25);
+//        textureAtlas.addRegion(baseName + "0_3_LOW", sourceImage, 316, 87, 24, 25);
+//        textureAtlas.addRegion(baseName + "0_4_LOW", sourceImage, 349, 87, 24, 25);
+        textureAtlas.addRegion(baseName + "0_2_LOW", sourceImage, 250, 87, 57, 25);
+        textureAtlas.addRegion(baseName + "0_3_LOW", sourceImage, 250, 87, 90, 25);
+        textureAtlas.addRegion(baseName + "0_4_LOW", sourceImage, 250, 87, 123, 25);
     }
 
     private void initBatteryIndicatorRegions() {
