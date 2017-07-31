@@ -4,10 +4,6 @@ import com.alienshots.ludum.component.*;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -255,14 +251,40 @@ public class GameScreenAtlas {
     }
 
     // Indices start at 1
-    @AllArgsConstructor
-    @Getter
-    @Setter
-    @EqualsAndHashCode
     public static class AtlasCoordinates {
+        public AtlasCoordinates(int level, int column, VerticalPosition verticalPosition) {
+            this.level = level;
+            this.column = column;
+            this.verticalPosition = verticalPosition;
+        }
+
         private int level;
         private int column;
         private VerticalPosition verticalPosition;
+
+        public int getLevel() {
+            return level;
+        }
+
+        public void setLevel(int level) {
+            this.level = level;
+        }
+
+        public int getColumn() {
+            return column;
+        }
+
+        public void setColumn(int column) {
+            this.column = column;
+        }
+
+        public VerticalPosition getVerticalPosition() {
+            return verticalPosition;
+        }
+
+        public void setVerticalPosition(VerticalPosition verticalPosition) {
+            this.verticalPosition = verticalPosition;
+        }
     }
 
     public enum VerticalPosition {
