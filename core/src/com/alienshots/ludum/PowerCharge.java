@@ -2,6 +2,8 @@ package com.alienshots.ludum;
 
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.system.*;
+import com.alienshots.ludum.system.ui.BatteryItemIndicatorUpdateSystem;
+import com.alienshots.ludum.system.ui.LifeIndicatorUpdateSystem;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -77,21 +79,25 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addSystem(new SawMovementSystem());
         engine.addSystem(new DropMovementSystem());
         engine.addSystem(new CrateMovementSystem());
+        engine.addSystem(new BatteryItemIndicatorUpdateSystem());
+        engine.addSystem(new LifeIndicatorUpdateSystem());
     }
 
     private void initEntities() {
-        Entity player = GameEntitiesFactory.instance.createPlayer();
+        GameEntitiesFactory factory = GameEntitiesFactory.instance;
+        Entity player = factory.createPlayer();
         engine.addEntity(player);
-        engine.addEntity(GameEntitiesFactory.instance.createLifeIndicator(player));
+        engine.addEntity(factory.createBatteryItemIndicator(player));
+        engine.addEntity(factory.createLifeIndicator(player));
         IntStream.range(0,3).forEach(i ->
-                engine.addEntity(GameEntitiesFactory.instance.createSaw())
+                engine.addEntity(factory.createSaw())
         );
-        engine.addEntity(GameEntitiesFactory.instance.createDrop(1, 1));
-        engine.addEntity(GameEntitiesFactory.instance.createDrop(2, 3));
-        engine.addEntity(GameEntitiesFactory.instance.createDrop(4, 2));
-        engine.addEntity(GameEntitiesFactory.instance.createDrop(6, 1));
+        engine.addEntity(factory.createDrop(1, 1));
+        engine.addEntity(factory.createDrop(2, 3));
+        engine.addEntity(factory.createDrop(4, 2));
+        engine.addEntity(factory.createDrop(6, 1));
         IntStream.range(0,3).forEach(i ->
-                engine.addEntity(GameEntitiesFactory.instance.createCrate())
+                engine.addEntity(factory.createCrate())
         );
     }
 }

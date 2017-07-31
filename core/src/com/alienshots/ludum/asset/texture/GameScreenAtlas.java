@@ -35,9 +35,9 @@ public class GameScreenAtlas {
         initLeverRegions();
         initDecoSparkRegions();
         initGeneratorLevelRegions();
-        initBatteryItemRegions();
-        initLifeRegions();
-        initBatteryIndicatorRegions();
+        initBatteryItemIndicatorRegions();
+        initLifeIndicatorRegions();
+        initChargeIndicatorRegions();
     }
 
     private void initPlayerRegions() {
@@ -201,12 +201,12 @@ public class GameScreenAtlas {
         textureAtlas.addRegion(baseName + "4_5_LOW", sourceImage, 1033, 254, 7, 15);
     }
 
-    private void initBatteryItemRegions() {
+    private void initBatteryItemIndicatorRegions() {
         String baseName = BatteryItemComponent.class.getName();
         textureAtlas.addRegion(baseName + "0_1_LOW", sourceImage, 191, 89, 46, 22);
     }
 
-    private void initLifeRegions() {
+    private void initLifeIndicatorRegions() {
         String baseName = LifeComponent.class.getName();
         // initially I defined 4 regions for each life indicator, afterwards I defined 4 regions for 1 life, 2 lives, etc
         textureAtlas.addRegion(baseName + "0_1_LOW", sourceImage, 250, 87, 24, 25);
@@ -218,8 +218,8 @@ public class GameScreenAtlas {
         textureAtlas.addRegion(baseName + "0_4_LOW", sourceImage, 250, 87, 123, 25);
     }
 
-    private void initBatteryIndicatorRegions() {
-        String baseName = BatteryIndicatorComponent.class.getName();
+    private void initChargeIndicatorRegions() {
+        String baseName = ChargeIndicatorComponent.class.getName();
         textureAtlas.addRegion(baseName + "0_1_LOW", sourceImage, 939, 91, 15, 18);
         textureAtlas.addRegion(baseName + "0_2_LOW", sourceImage, 954, 91, 15, 18);
         textureAtlas.addRegion(baseName + "0_3_LOW", sourceImage, 969, 91, 15, 18);

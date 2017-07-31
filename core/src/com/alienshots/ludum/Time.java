@@ -2,6 +2,7 @@ package com.alienshots.ludum;
 
 import com.badlogic.gdx.Gdx;
 import jdk.nashorn.internal.objects.annotations.Constructor;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -54,6 +55,38 @@ public class Time {
 
         public boolean isTicking() {
             return elapsed == 0;
+        }
+    }
+
+    public static class BlinkingTimer {
+        private int blinkIntervalMs;
+        private int maxBlinks;
+        private boolean initialState;
+        private int accumulatedTime;
+        @Getter
+        private boolean blinkState;
+        @Getter
+        private boolean finished;
+
+        // timer finishes after x blinks (state changes) max=2 initial true would be true,false, then finished with true
+        public BlinkingTimer(int blinkIntervalMs, int maxBlinks, boolean initialState) {
+            this.blinkIntervalMs = blinkIntervalMs;
+            this.maxBlinks = maxBlinks;
+            this.initialState = initialState;
+            this.blinkState = initialState;
+        }
+
+        public void update() {
+            accumulatedTime += Gdx.graphics.getDeltaTime() * 1000f;
+            int blinks;
+            if (accumulatedTime >= maxBlinks * blinkIntervalMs) {
+                finished = true;
+                blinks = maxBlinks;
+            } else {
+                blinks = accumulatedTime / blinkIntervalMs;
+            }
+            boolean odd = blinks % 2 != 0;
+            blinkState = initialState ^ odd; // when odd blinks, opposite to initial, if not, same as initial
         }
     }
 }

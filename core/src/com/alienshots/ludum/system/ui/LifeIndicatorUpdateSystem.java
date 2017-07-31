@@ -1,11 +1,8 @@
-package com.alienshots.ludum.system;
+package com.alienshots.ludum.system.ui;
 
 import com.alienshots.ludum.Time;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
-import com.alienshots.ludum.component.DisplayComponent;
-import com.alienshots.ludum.component.DropComponent;
-import com.alienshots.ludum.component.LifeComponent;
-import com.alienshots.ludum.component.PositionComponent;
+import com.alienshots.ludum.component.*;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -13,14 +10,15 @@ import com.badlogic.ashley.systems.IteratingSystem;
 
 import static com.alienshots.ludum.asset.texture.GameScreenAtlas.AtlasCoordinates;
 
-public class LifeUpdateSystem extends IteratingSystem {
+public class LifeIndicatorUpdateSystem extends IteratingSystem {
 
     private final ComponentMapper<LifeComponent> lifeMapper;
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<DisplayComponent> displayMapper;
 
-    public LifeUpdateSystem() {
-        super(Family.all(PositionComponent.class, DisplayComponent.class, LifeComponent.class).get());
+    public LifeIndicatorUpdateSystem() {
+        super(Family.all(PositionComponent.class, DisplayComponent.class, LifeComponent.class)
+                .exclude(PlayerComponent.class).get());
         lifeMapper = ComponentMapper.getFor(LifeComponent.class);
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         displayMapper = ComponentMapper.getFor(DisplayComponent.class);
