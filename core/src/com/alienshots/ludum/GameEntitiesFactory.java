@@ -20,6 +20,7 @@ public class GameEntitiesFactory {
         player.add(buildPositionComponent(PlayerComponent.class, initialCoords));
         player.add(new LifeComponent(3));
         player.add(new BatteryItemComponent(true));
+        player.add(new FlyingBatteryComponent());
         return player;
     }
 
@@ -45,6 +46,16 @@ public class GameEntitiesFactory {
         return lifeIndicator;
     }
 
+    public Entity createFlyingBattery(Entity player) {
+        Entity flyingBattery = new Entity();
+        FlyingBatteryComponent flyingBatteryComponent = player.getComponent(FlyingBatteryComponent.class);
+        AtlasCoordinates initialCoords = new AtlasCoordinates(4, 1, VerticalPosition.LOW);
+
+        flyingBattery.add(flyingBatteryComponent);
+        flyingBattery.add(new DisplayComponent(true));
+        flyingBattery.add(buildPositionComponent(FlyingBatteryComponent.class, initialCoords));
+        return flyingBattery;
+    }
     public Entity createSaw() {
         Entity saw = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(1, 7, VerticalPosition.LOW);

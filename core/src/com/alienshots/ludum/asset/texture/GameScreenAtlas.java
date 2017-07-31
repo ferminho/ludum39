@@ -194,7 +194,7 @@ public class GameScreenAtlas {
     }
 
     private void initFlyingBatteryRegions() {
-        String baseName = DecoSparkComponent.class.getName();
+        String baseName = FlyingBatteryComponent.class.getName();
         textureAtlas.addRegion(baseName + "4_1_LOW", sourceImage, 990, 184, 18, 15);
     }
 

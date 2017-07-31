@@ -76,9 +76,11 @@ public class PowerCharge extends ApplicationAdapter {
     private void initSystems() {
         engine.addSystem(new RenderSystem(camera));
         engine.addSystem(new PlayerControlSystem());
+        engine.addSystem(new PlayerEventsSystem());
         engine.addSystem(new SawMovementSystem());
         engine.addSystem(new DropMovementSystem());
         engine.addSystem(new CrateMovementSystem());
+        engine.addSystem(new FlyingBatteryMovementSystem());
         engine.addSystem(new BatteryItemIndicatorUpdateSystem());
         engine.addSystem(new LifeIndicatorUpdateSystem());
     }
@@ -89,6 +91,7 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addEntity(player);
         engine.addEntity(factory.createBatteryItemIndicator(player));
         engine.addEntity(factory.createLifeIndicator(player));
+        engine.addEntity(factory.createFlyingBattery(player));
         IntStream.range(0,3).forEach(i ->
                 engine.addEntity(factory.createSaw())
         );
