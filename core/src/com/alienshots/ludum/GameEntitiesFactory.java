@@ -11,16 +11,28 @@ public class GameEntitiesFactory {
 
     public static final GameEntitiesFactory instance = new GameEntitiesFactory();
 
-    public Entity createPlayer() {
+    public Entity createGenerator() {
+        Entity generator = new Entity();
+        AtlasCoordinates initialCoords = new AtlasCoordinates(4, 1, VerticalPosition.LOW);
+
+        generator.add(new GeneratorComponent());
+        generator.add(new GeneratorLevelComponent());
+        generator.add(new DisplayComponent(false));
+        generator.add(buildPositionComponent(GeneratorLevelComponent.class, initialCoords));
+        return generator;
+    }
+
+    public Entity createPlayer(Entity generator) {
         Entity player = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(1, 1, VerticalPosition.LOW);
 
+        player.add(generator.getComponent(GeneratorLevelComponent.class));
         player.add(new PlayerComponent());
         player.add(new DisplayComponent(true));
         player.add(buildPositionComponent(PlayerComponent.class, initialCoords));
         player.add(new LifeComponent(3));
         player.add(new BatteryItemComponent(true));
-        player.add(new FlyingBatteryComponent());
+        player.add(new FlyingBatteryLaunchComponent());
         return player;
     }
 
@@ -46,16 +58,18 @@ public class GameEntitiesFactory {
         return lifeIndicator;
     }
 
-    public Entity createFlyingBattery(Entity player) {
+    public Entity createFlyingBattery(Entity player, Entity generator) {
         Entity flyingBattery = new Entity();
-        FlyingBatteryComponent flyingBatteryComponent = player.getComponent(FlyingBatteryComponent.class);
         AtlasCoordinates initialCoords = new AtlasCoordinates(4, 1, VerticalPosition.LOW);
 
-        flyingBattery.add(flyingBatteryComponent);
+        flyingBattery.add(new FlyingBatteryComponent());
+        flyingBattery.add(player.getComponent(FlyingBatteryLaunchComponent.class));
+        flyingBattery.add(generator.getComponent(GeneratorLevelComponent.class));
         flyingBattery.add(new DisplayComponent(true));
         flyingBattery.add(buildPositionComponent(FlyingBatteryComponent.class, initialCoords));
         return flyingBattery;
     }
+
     public Entity createSaw() {
         Entity saw = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(1, 7, VerticalPosition.LOW);

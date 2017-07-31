@@ -1,8 +1,10 @@
 package com.alienshots.ludum.system.ui;
 
-import com.alienshots.ludum.Time;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
-import com.alienshots.ludum.component.*;
+import com.alienshots.ludum.component.DisplayComponent;
+import com.alienshots.ludum.component.LifeComponent;
+import com.alienshots.ludum.component.PlayerComponent;
+import com.alienshots.ludum.component.PositionComponent;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -38,6 +40,7 @@ public class LifeIndicatorUpdateSystem extends IteratingSystem {
         } else {
             column = Math.min(4, lifeComponent.getLives()); // we can only represent 4
         }
+        positionComponent.setRegion(GameScreenAtlas.instance.getScreenTexture(LifeComponent.class, coords));
         displayComponent.setVisible(visible);
         coords.setColumn(column);
     }

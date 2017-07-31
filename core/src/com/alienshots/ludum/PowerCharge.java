@@ -3,6 +3,7 @@ package com.alienshots.ludum;
 import com.alienshots.ludum.asset.texture.GameScreenAtlas;
 import com.alienshots.ludum.system.*;
 import com.alienshots.ludum.system.ui.BatteryItemIndicatorUpdateSystem;
+import com.alienshots.ludum.system.ui.GeneratorLevelIndicatorUpdateSystem;
 import com.alienshots.ludum.system.ui.LifeIndicatorUpdateSystem;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -83,15 +84,18 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addSystem(new FlyingBatteryMovementSystem());
         engine.addSystem(new BatteryItemIndicatorUpdateSystem());
         engine.addSystem(new LifeIndicatorUpdateSystem());
+        engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
     }
 
     private void initEntities() {
         GameEntitiesFactory factory = GameEntitiesFactory.instance;
-        Entity player = factory.createPlayer();
+        Entity generator = factory.createGenerator();
+        engine.addEntity(generator);
+        Entity player = factory.createPlayer(generator);
         engine.addEntity(player);
         engine.addEntity(factory.createBatteryItemIndicator(player));
         engine.addEntity(factory.createLifeIndicator(player));
-        engine.addEntity(factory.createFlyingBattery(player));
+        engine.addEntity(factory.createFlyingBattery(player, generator));
         IntStream.range(0,3).forEach(i ->
                 engine.addEntity(factory.createSaw())
         );

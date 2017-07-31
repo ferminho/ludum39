@@ -6,8 +6,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GeneratorLevelComponent implements Component {
-    public static final int MAX_LEVEL = 5;
-
-    private int level;
+public class FlyingBatteryLaunchComponent implements Component {
+    private boolean toBeLaunched;
 }

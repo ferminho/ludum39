@@ -55,6 +55,8 @@ public class BatteryItemIndicatorUpdateSystem extends IteratingSystem {
             } else {
                 visible = true;
             }
+        } else {
+            carryingState = CarryingState.NO_BATTERY;
         }
         displayComponent.setVisible(visible);
     }

@@ -1,9 +1,6 @@
 package com.alienshots.ludum.system;
 
-import com.alienshots.ludum.component.BatteryItemComponent;
-import com.alienshots.ludum.component.FlyingBatteryComponent;
-import com.alienshots.ludum.component.PlayerComponent;
-import com.alienshots.ludum.component.PositionComponent;
+import com.alienshots.ludum.component.*;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -16,14 +13,16 @@ public class PlayerEventsSystem extends IteratingSystem {
 
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<BatteryItemComponent> batteryMapper;
-    private final ComponentMapper<FlyingBatteryComponent> flyingBatteryMapper;
+    private final ComponentMapper<FlyingBatteryLaunchComponent> batteryLaunchMapper;
+    private final ComponentMapper<GeneratorLevelComponent> generatorLevelMapper;
 
     public PlayerEventsSystem() {
         super(Family.all(PlayerComponent.class).get());
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         batteryMapper = ComponentMapper.getFor(BatteryItemComponent.class);
-        flyingBatteryMapper = ComponentMapper.getFor(FlyingBatteryComponent.class);
+        batteryLaunchMapper = ComponentMapper.getFor(FlyingBatteryLaunchComponent.class);
+        generatorLevelMapper = ComponentMapper.getFor(GeneratorLevelComponent.class);
     }
 
     @Override
@@ -31,14 +30,16 @@ public class PlayerEventsSystem extends IteratingSystem {
         PositionComponent positionComponent = positionMapper.get(player);
         AtlasCoordinates coords = positionComponent.getCoords();
         BatteryItemComponent battery = batteryMapper.get(player);
-        FlyingBatteryComponent flyingBattery = flyingBatteryMapper.get(player);
+        FlyingBatteryLaunchComponent batteryLauncher = batteryLaunchMapper.get(player);
+        GeneratorLevelComponent generatorLevel = generatorLevelMapper.get(player);
 
         if (coords.getLevel() == 1 && coords.getColumn() == 1) {
             battery.setCarryingBattery(true);
         }
-        if (battery.isCarryingBattery() && coords.getLevel() == 4 &&
-                coords.getColumn() == 7 && coords.getVerticalPosition() == VerticalPosition.HIGH) {
-            flyingBattery.setFlying(true);
+        if (battery.isCarryingBattery() && coords.getLevel() == 4 && coords.getColumn() == 7 &&
+                generatorLevel.getLevel() < GeneratorLevelComponent.MAX_LEVEL &&
+                coords.getVerticalPosition() == VerticalPosition.HIGH) {
+            batteryLauncher.setToBeLaunched(true);
             battery.setCarryingBattery(false);
         }
     }
