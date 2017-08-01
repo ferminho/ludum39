@@ -83,6 +83,18 @@ public class GameEntitiesFactory {
         return batteryItemIndicator;
     }
 
+    public Entity createDecoSpark(Entity generator) {
+        Entity decoSpark = new Entity();
+        GeneratorLevelComponent generatorLevelComponent = generator.getComponent(GeneratorLevelComponent.class);
+        AtlasCoordinates initialCoords = new AtlasCoordinates(4, 1, VerticalPosition.LOW);
+
+        decoSpark.add(generatorLevelComponent);
+        decoSpark.add(new DecoSparkComponent());
+        decoSpark.add(new DisplayComponent(false));
+        decoSpark.add(buildPositionComponent(DecoSparkComponent.class, initialCoords));
+        return decoSpark;
+    }
+
     public Entity createFlyingBattery(Entity player, Entity generator) {
         Entity flyingBattery = new Entity();
         AtlasCoordinates initialCoords = new AtlasCoordinates(4, 1, VerticalPosition.LOW);

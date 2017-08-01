@@ -90,6 +90,7 @@ public class PowerCharge extends ApplicationAdapter {
         player = factory.createPlayer(generator, lever, world);
         engine.addEntity(player);
         engine.addEntity(factory.createBatteryItemIndicator(player));
+        engine.addEntity(factory.createDecoSpark(generator));
         engine.addEntity(factory.createFlyingBattery(player, generator));
         IntStream.range(0,3).forEach(i ->
                 engine.addEntity(factory.createSaw(world))
@@ -118,6 +119,7 @@ public class PowerCharge extends ApplicationAdapter {
         engine.addSystem(new PlayerWatchDogSystem());
         engine.addSystem(new ChargeIndicatorUpdateSystem());
         engine.addSystem(new GeneratorLevelIndicatorUpdateSystem());
+        engine.addSystem(new GeneratorSparkerSystem());
         engine.addSystem(new BatteryItemIndicatorUpdateSystem());
         engine.addSystem(new RenderSystem(camera, world));
     }

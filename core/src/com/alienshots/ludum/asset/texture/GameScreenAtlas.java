@@ -238,8 +238,10 @@ public class GameScreenAtlas {
     }
 
     public TextureRegion getScreenTexture(Class<?> tagClass, AtlasCoordinates coords) {
-        String regionName = String.format(tagClass.getName() + "%s_%s_%s",
-                                          coords.getLevel(), coords.getColumn(), coords.getVerticalPosition());
+        String regionName = tagClass.getName() +
+                coords.getLevel() + "_" +
+                coords.getColumn() + "_" +
+                coords.getVerticalPosition();
         TextureRegion region = textureAtlas.findRegion(regionName);
         if (region == null)
             System.out.println("REGION not found for " +regionName);

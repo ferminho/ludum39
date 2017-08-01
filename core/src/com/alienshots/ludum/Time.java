@@ -8,11 +8,16 @@ import java.util.List;
 public class Time {
 
     public static final int DEFAULT_GAME_SPEED_IN_MS = 1000;
+    public static final float GAME_SPEED_INCREASE = 0.8f;
 
     public static final Time instance = new Time();
 
     private int elapsedTimeInMs = 0;
     private int gameSpeedInMs = DEFAULT_GAME_SPEED_IN_MS;
+
+    public void increaseSpeed() {
+        gameSpeedInMs = (int) ((float)gameSpeedInMs * GAME_SPEED_INCREASE);
+    }
 
     public boolean timeIsMoving() {
         elapsedTimeInMs += Gdx.graphics.getDeltaTime() * 1000;
@@ -30,8 +35,10 @@ public class Time {
         return newTimer;
     }
 
-    public static void tickTimers() {
+    public static void tickTimers()
+    {
         timers.forEach(Timer::moveTime);
+        SoundManager.instance.play(SoundManager.SFX_TICK);
     }
 
     public int getGameSpeedInMs() {

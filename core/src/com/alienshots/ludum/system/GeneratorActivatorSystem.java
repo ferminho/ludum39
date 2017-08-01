@@ -1,6 +1,7 @@
 package com.alienshots.ludum.system;
 
 import com.alienshots.ludum.SoundManager;
+import com.alienshots.ludum.Time;
 import com.alienshots.ludum.component.GeneratorComponent;
 import com.alienshots.ludum.component.GeneratorLevelComponent;
 import com.alienshots.ludum.component.LeverStateComponent;
@@ -38,8 +39,8 @@ public class GeneratorActivatorSystem extends IteratingSystem {
                 generatorLevel.setLevel(0);
 
                 worldCharge.setChargeLevel(WorldChargeComponent.MAX_CHARGE);
-                SoundManager.instance.play(SoundManager.SFX_POWER_UP);
-                // TODO: do something, some effect, whatever, difficulty increase here or somewhere else...
+                SoundManager.instance.play(SoundManager.SFX_POWER_UP, 1f);
+                Time.instance.increaseSpeed();
             }
         }
         previousLevel = generatorLevel.getLevel();

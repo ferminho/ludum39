@@ -26,7 +26,7 @@ public class PlayerComponent implements Component {
     public static class Jump {
         private static final Jump NOT_JUMPING = new Jump();
 
-        private static final float JUMP_DURATION_TICKS = 0.85f;
+        private static final float JUMP_DURATION_TICKS = 0.9f;
 
         int jumpElapsedInMs = 0;
 
