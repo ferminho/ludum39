@@ -22,6 +22,7 @@ public class SoundManager {
     public static final String SFX_SAW_TURN = "sawturn01.wav";
     public static final String SFX_CRATE_TURN = "boxturn01.wav";
     public static final String SFX_TICK = "tick01.wav";
+    public static final String SFX_START = "start01.wav";
 
     private float pitch = 1.0f;
     private HashMap<String, Sound> sounds = new HashMap<>();
@@ -30,7 +31,7 @@ public class SoundManager {
         Arrays.stream(new String[]{
                 SFX_JUMP, SFX_MOV, SFX_DIE, SFX_DROP, SFX_SAW, SFX_GENERATOR_UP,
                 SFX_POWER_UP, SFX_SWITCH_OFF, SFX_THROW_BATTERY, SFX_CRATE,
-                SFX_SAW_TURN, SFX_CRATE_TURN, SFX_TICK
+                SFX_SAW_TURN, SFX_CRATE_TURN, SFX_TICK, SFX_START
                 }).forEach((s) -> {
             sounds.put(s, Gdx.audio.newSound(Gdx.files.internal(s)));
         });

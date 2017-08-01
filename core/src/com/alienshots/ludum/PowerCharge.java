@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class PowerCharge extends ApplicationAdapter {
+    private Time.SpanTimer initTimer = new Time.SpanTimer(1500);
     private OrthographicCamera camera;
     private Batch batch;
     private Texture backgroundTexture;
@@ -34,14 +35,22 @@ public class PowerCharge extends ApplicationAdapter {
         batch = new SpriteBatch();
         this.backgroundTexture = new Texture("background.png");
         initEngine();
+        SoundManager.instance.play(SoundManager.SFX_START);
     }
 
 	@Override
 	public void render () {
+        initTimer.update();
         camera.update();
         renderBackground();
-        makeGameTimeProgress();
-        engine.update(Gdx.graphics.getDeltaTime());
+        if (initTimer.isFinished()) {
+            makeGameTimeProgress();
+            engine.update(Gdx.graphics.getDeltaTime());
+        } else {
+            batch.begin();
+            batch.draw(GameScreenAtlas.instance.getSpritesLibraryTexture(), 0f, 0f);
+            batch.end();
+        }
     }
 
     @Override
